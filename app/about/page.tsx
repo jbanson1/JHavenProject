@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { site } from "@/site.config";
 import { Photo } from "@/components/Photo";
-import { IconPin } from "@/components/Icons";
-import { ArrowButton, CtaBand, SectionHead, StatsStrip, values } from "@/components/Sections";
+import { ButtonLink, CtaBand, SectionHead, StatsStrip, values } from "@/components/Sections";
 
 export const metadata: Metadata = {
   title: "About us",
@@ -14,10 +13,9 @@ export default function About() {
     <>
       <section className="page-hero section--sand">
         <div className="container">
-          <span className="kicker">About {site.name}</span>
-          <h1>Looking after homes, and the people who own them</h1>
+          <h1>About {site.name}</h1>
           <p className="lead">
-            {site.name} was founded on a simple idea: being a landlord should feel secure, not stressful. We give owners a reliable income and give guests a home that feels cared for.
+            We started {site.name} because being a landlord should feel secure, not stressful. Owners get a reliable income, and guests get a home that&apos;s properly looked after.
           </p>
         </div>
       </section>
@@ -25,66 +23,53 @@ export default function About() {
       <section className="section">
         <div className="container split">
           <div>
-            <span className="kicker">Our story</span>
             <h2>Why we started</h2>
             {/* TODO: replace with the founder's own story in her words. */}
             <p>
-              Too many landlords we spoke to were worn out by void months, late payments and constant call-outs. At the same time, professionals visiting the city struggled to find somewhere comfortable, well-located and good value to stay.
+              The landlords we spoke to were tired of empty months, late payments and constant call-outs. At the same time, people coming to the city for work struggled to find somewhere comfortable and well located that didn&apos;t cost hotel prices.
             </p>
             <p>
-              We bring the two together. We take on homes for the long term, invest in making them beautiful, and run them to a hotel standard, so owners get peace of mind and guests get a proper place to stay.
+              So we bring the two together. We take on homes for the long term, put money into making them nice to live in, and run them properly. Owners get peace of mind and guests get a decent place to stay.
             </p>
             <p>
-              We&apos;re a small, hands-on team. When you call, you speak to the person who looks after your property.
+              We&apos;re a small team. When you call, you speak to the person who looks after your property.
             </p>
             <div className="btn-row mt-lg">
-              <ArrowButton href="/contact">Talk to us</ArrowButton>
+              <ButtonLink href="/contact">Get in touch</ButtonLink>
             </div>
           </div>
           <div className="split__media">
-            <Photo src={site.photos.about} alt="A warm, welcoming living room" scene="living" className="media--tall" />
+            <Photo src={site.photos.about} alt="A living room in one of our homes" scene="living" className="media--tall" />
           </div>
         </div>
       </section>
 
       <section className="section section--sand">
         <div className="container">
-          <SectionHead eyebrow="Our values" title="What you can expect from us" />
-          <div className="grid grid--3">
-            {values.map(({ icon: Icon, title, body }) => (
-              <div key={title} className="card">
-                <div className="icon-badge"><Icon /></div>
-                <h3>{title}</h3>
-                <p>{body}</p>
+          <SectionHead title="How we work" />
+          <dl className="feature-list feature-list--3">
+            {values.map(({ title, body }) => (
+              <div key={title} className="feature">
+                <dt>{title}</dt>
+                <dd>{body}</dd>
               </div>
             ))}
-          </div>
+          </dl>
         </div>
       </section>
 
       <section className="section">
         <div className="container">
-          <SectionHead eyebrow="Where we work" title="Areas we cover" />
-          <div className="grid grid--3">
-            {site.areas.map((a) => (
-              <div key={a} className="card" style={{ display: "flex", gap: 14, alignItems: "center" }}>
-                <div className="icon-badge" style={{ margin: 0 }}><IconPin /></div>
-                <h3 style={{ margin: 0, fontSize: "1.15rem" }}>{a}</h3>
-              </div>
-            ))}
-            {site.futureAreas.map((a) => (
-              <div key={a} className="card" style={{ display: "flex", gap: 14, alignItems: "center", borderStyle: "dashed" }}>
-                <div className="icon-badge" style={{ margin: 0 }}><IconPin /></div>
-                <div>
-                  <h3 style={{ margin: 0, fontSize: "1.15rem" }}>{a}</h3>
-                  <p style={{ fontSize: "0.88rem" }}>Coming soon</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="mt-lg">
-            <StatsStrip />
-          </div>
+          <SectionHead
+            title="Where we work"
+            lead={
+              <>
+                We currently take on properties in {site.areas.join(" and ")}.
+                {site.futureAreas.length > 0 && <> We&apos;re also planning to expand to {site.futureAreas.join(" and ")}.</>}
+              </>
+            }
+          />
+          <StatsStrip />
         </div>
       </section>
 

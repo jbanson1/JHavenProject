@@ -53,7 +53,7 @@ export const site = {
    * Set a value to null to show a drawn placeholder instead.
    */
   photos: {
-    hero: "/images/hero.jpg" as string | null,
+    hero: "/images/hero-living.jpg" as string | null,
     about: "/images/about.jpg" as string | null,
     refurb: "/images/refurb.jpg" as string | null,
     kitchen: "/images/kitchen.jpg" as string | null,

@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { site } from "@/site.config";
 import { Photo } from "@/components/Photo";
-import { IconArrow } from "@/components/Icons";
-import { Checklist, Hero, Kicker, SectionHead } from "@/components/Sections";
+import { Hero, SectionHead } from "@/components/Sections";
 import type { Scene } from "@/components/Photo";
 
 export const metadata: Metadata = {
@@ -24,7 +23,7 @@ function BookingButtons({ light = false }: { light?: boolean }) {
     <div className="btn-row">
       {airbnb && (
         <a className="btn btn--airbnb" href={airbnb} target="_blank" rel="noopener noreferrer">
-          Book on Airbnb <IconArrow />
+          Book on Airbnb
         </a>
       )}
       {bookingCom && (
@@ -43,16 +42,15 @@ export default function Stay() {
         short
         photo={site.photos.city}
         scene="exterior"
-        kicker="Stay with us"
-        title="Feel at home, wherever work takes you"
-        lead="Fully furnished, professionally cleaned homes for short and medium stays. Better space and value than a hotel, with everything you need."
+        title="Places to stay"
+        lead="Furnished, professionally cleaned homes for short and medium stays. More space than a hotel room, with a proper kitchen and somewhere to work."
       >
         <BookingButtons light />
       </Hero>
 
       <section className="section">
         <div className="container">
-          <SectionHead eyebrow="Our homes" title="A taste of where you could stay" lead="Every home has fast Wi-Fi, a proper workspace, quality linen and self check-in." />
+          <SectionHead title="Our homes" lead="Every home has fast Wi-Fi, a desk, good linen and self check-in." />
           <div className="grid grid--3">
             {homes.map((h, i) => (
               <article key={h.title} className="property-card">
@@ -72,10 +70,9 @@ export default function Stay() {
       <section className="section section--sand" id="book">
         <div className="container split">
           <div>
-            <Kicker>Book a stay</Kicker>
-            <h2>Check availability and book on Airbnb</h2>
-            <p className="lead">All our homes are listed on Airbnb, where you can see photos, prices, reviews and live availability, and book securely.</p>
-            <Checklist items={["Self check-in at any time", "Professionally cleaned between every stay", "Weekly and monthly discounts on longer stays"]} />
+            <h2>Book on Airbnb</h2>
+            <p className="lead">All our homes are listed on Airbnb, with photos, prices, reviews and live availability.</p>
+            <p>Self check-in is available at any time, every home is professionally cleaned between stays, and longer stays get weekly and monthly discounts.</p>
             <div className="mt-lg">
               <BookingButtons />
             </div>

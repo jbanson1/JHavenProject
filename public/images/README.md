@@ -7,7 +7,7 @@ you have them: either overwrite the files keeping the same names, or change the 
 
 | File | Used for | Unsplash photo |
 | ---- | -------- | -------------- |
-| hero.jpg | Home page hero | https://images.unsplash.com/photo-1554995207-c18c203602cb |
+| hero-living.jpg | Home page hero | https://images.unsplash.com/photo-1615873968403-89e068629265 |
 | about.jpg | "Who we are" / About | https://images.unsplash.com/photo-1600210492486-724fe5c67fb0 |
 | refurb.jpg | Refurbishment section | https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf |
 | kitchen.jpg | Landlords page | https://images.unsplash.com/photo-1484154218962-a197022b5858 |

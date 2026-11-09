@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { site } from "@/site.config";
 import { Photo } from "@/components/Photo";
 import { IconPin } from "@/components/Icons";
-import { ArrowButton, CtaBand, SectionHead, Stats, values } from "@/components/Sections";
+import { ArrowButton, CtaBand, SectionHead, StatsStrip, values } from "@/components/Sections";
 
 export const metadata: Metadata = {
   title: "About us",
@@ -14,7 +14,7 @@ export default function About() {
     <>
       <section className="page-hero section--sand">
         <div className="container">
-          <span className="pill-label">About {site.name}</span>
+          <span className="kicker">About {site.name}</span>
           <h1>Looking after homes, and the people who own them</h1>
           <p className="lead">
             {site.name} was founded on a simple idea: being a landlord should feel secure, not stressful. We give owners a reliable income and give guests a home that feels cared for.
@@ -25,7 +25,7 @@ export default function About() {
       <section className="section">
         <div className="container split">
           <div>
-            <span className="pill-label">Our story</span>
+            <span className="kicker">Our story</span>
             <h2>Why we started</h2>
             {/* TODO: replace with the founder's own story in her words. */}
             <p>
@@ -49,7 +49,7 @@ export default function About() {
 
       <section className="section section--sand">
         <div className="container">
-          <SectionHead center eyebrow="Our values" title="What you can expect from us" />
+          <SectionHead eyebrow="Our values" title="What you can expect from us" />
           <div className="grid grid--3">
             {values.map(({ icon: Icon, title, body }) => (
               <div key={title} className="card">
@@ -64,8 +64,8 @@ export default function About() {
 
       <section className="section">
         <div className="container">
-          <SectionHead center eyebrow="Where we work" title="Areas we cover" />
-          <div className="grid grid--3" style={{ maxWidth: 900, margin: "0 auto" }}>
+          <SectionHead eyebrow="Where we work" title="Areas we cover" />
+          <div className="grid grid--3">
             {site.areas.map((a) => (
               <div key={a} className="card" style={{ display: "flex", gap: 14, alignItems: "center" }}>
                 <div className="icon-badge" style={{ margin: 0 }}><IconPin /></div>
@@ -83,7 +83,7 @@ export default function About() {
             ))}
           </div>
           <div className="mt-lg">
-            <Stats />
+            <StatsStrip />
           </div>
         </div>
       </section>

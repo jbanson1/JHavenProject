@@ -26,9 +26,12 @@ export const site = {
   /** Shown as "coming soon" on the About page. Set to [] to hide. */
   futureAreas: ["Jamaica"],
 
-  /** Guest booking links. Leave as "" to hide the buttons. */
+  /**
+   * Guest booking links. Guests are sent to Airbnb instead of the contact form.
+   * TODO: replace with her Airbnb host profile or listing URL. "" hides the button.
+   */
   bookingLinks: {
-    airbnb: "",
+    airbnb: "https://www.airbnb.co.uk/",
     bookingCom: "",
   },
 

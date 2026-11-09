@@ -30,7 +30,7 @@ export function Footer() {
               <li><Link href="/landlords">For landlords</Link></li>
               <li><Link href="/landlords#faq">Landlord FAQ</Link></li>
               <li><Link href="/about">About us</Link></li>
-              <li><Link href="/stay">Accommodation enquiry</Link></li>
+              <li><Link href="/stay">Book a stay</Link></li>
               <li><Link href="/contact">Contact</Link></li>
             </ul>
           </div>

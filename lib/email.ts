@@ -14,24 +14,19 @@ function escapeHtml(s: string): string {
 
 export function enquiryRows(e: Enquiry): [string, string][] {
   const rows: [string, string][] = [
-    ["Enquiry type", e.type === "landlord" ? "Landlord (property)" : "Guest (stay)"],
     ["Name", e.name],
     ["Email", e.email],
     ["Phone", e.phone],
+    ["Area / postcode", e.area],
+    ["Property type", e.propertyType],
+    ["Bedrooms", e.bedrooms],
+    ["Message", e.message],
   ];
-  if (e.type === "landlord") {
-    rows.push(["Area / postcode", e.area], ["Property type", e.propertyType], ["Bedrooms", e.bedrooms]);
-  } else {
-    rows.push(["Dates", e.dates], ["Guests", e.guests], ["Preferred area", e.area]);
-  }
-  rows.push(["Message", e.message]);
   return rows.filter(([, v]) => v !== "");
 }
 
 export function enquirySubject(e: Enquiry): string {
-  return e.type === "landlord"
-    ? `New landlord enquiry: ${e.area || "property"} (${e.name})`
-    : `New guest enquiry from ${e.name}`;
+  return `New landlord enquiry: ${e.area} (${e.name})`;
 }
 
 export async function sendEnquiry(e: Enquiry): Promise<DeliveryResult> {

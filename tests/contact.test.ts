@@ -5,7 +5,6 @@ import { resetRateLimit } from "@/lib/rateLimit";
 import { POST } from "@/app/api/contact/route";
 
 const good = {
-  type: "landlord",
   name: "Sam Patel",
   email: "sam@example.com",
   phone: "07700 900123",
@@ -31,14 +30,9 @@ describe("validateEnquiry", () => {
   });
 
   it("reports missing and malformed fields", () => {
-    const r = validateEnquiry({ type: "landlord", name: "", email: "nope", phone: "abc", area: "", message: "hi" });
+    const r = validateEnquiry({ name: "", email: "nope", phone: "abc", area: "", message: "hi" });
     expect(r.ok).toBe(false);
     if (!r.ok) expect(Object.keys(r.errors).sort()).toEqual(["area", "email", "message", "name", "phone"]);
-  });
-
-  it("does not require an area for guests", () => {
-    const r = validateEnquiry({ ...good, type: "guest", area: "" });
-    expect(r.ok).toBe(true);
   });
 
   it("strips newlines from name and email (no header injection)", () => {

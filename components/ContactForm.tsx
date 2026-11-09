@@ -2,22 +2,30 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { BEDROOM_OPTIONS, PROPERTY_TYPES, type EnquiryType } from "@/lib/validate";
+import { BEDROOM_OPTIONS, PROPERTY_TYPES } from "@/lib/validate";
 import { site } from "@/site.config";
-import { IconCheck } from "./Icons";
+import { IconArrow, IconCheck } from "./Icons";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
-export function ContactForm({ initialType = "landlord", allowSwitch = true }: { initialType?: EnquiryType; allowSwitch?: boolean }) {
-  const [type, setType] = useState<EnquiryType>(initialType);
+/** Landlord appraisal form. Guests are sent to Airbnb instead (see AirbnbCard). */
+export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState("");
+  const [prefill, setPrefill] = useState({ area: "", bedrooms: "" });
   const startedAt = useRef<number>(0);
   const successRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     startedAt.current = Date.now();
+    // Carry over the answers from the home page's quick appraisal card.
+    const q = new URLSearchParams(window.location.search);
+    const bedrooms = q.get("bedrooms") ?? "";
+    setPrefill({
+      area: (q.get("area") ?? "").slice(0, 100),
+      bedrooms: (BEDROOM_OPTIONS as readonly string[]).includes(bedrooms) ? bedrooms : "",
+    });
   }, []);
   useEffect(() => {
     if (status === "sent") successRef.current?.focus();
@@ -33,7 +41,7 @@ export function ContactForm({ initialType = "landlord", allowSwitch = true }: { 
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, type, startedAt: startedAt.current }),
+        body: JSON.stringify({ ...data, type: "landlord", startedAt: startedAt.current }),
       });
       const json = await res.json().catch(() => ({}));
       if (res.ok && json.ok) {
@@ -55,9 +63,7 @@ export function ContactForm({ initialType = "landlord", allowSwitch = true }: { 
         <div className="icon-badge"><IconCheck /></div>
         <h3>Thank you, we&apos;ve got your message</h3>
         <p style={{ color: "var(--muted)" }}>
-          {type === "landlord"
-            ? "We'll be in touch within one working day to arrange a time to talk about your property."
-            : "We'll get back to you within one working day with available homes and prices."}
+          We&apos;ll be in touch within one working day to arrange a time to talk about your property.
         </p>
       </div>
     );
@@ -73,12 +79,10 @@ export function ContactForm({ initialType = "landlord", allowSwitch = true }: { 
 
   return (
     <form className="card form" onSubmit={onSubmit} noValidate>
-      {allowSwitch && (
-        <div className="segmented" role="group" aria-label="I am a">
-          <button type="button" aria-pressed={type === "landlord"} onClick={() => setType("landlord")}>I&apos;m a landlord</button>
-          <button type="button" aria-pressed={type === "guest"} onClick={() => setType("guest")}>I&apos;m looking to stay</button>
-        </div>
-      )}
+      <div>
+        <h2 style={{ fontSize: "1.5rem", marginBottom: 4 }}>Request a free appraisal</h2>
+        <p className="form-note">Takes about a minute. No obligation.</p>
+      </div>
 
       {formError && <div className="alert alert--error" role="alert">{formError}</div>}
 
@@ -102,43 +106,28 @@ export function ContactForm({ initialType = "landlord", allowSwitch = true }: { 
           {err("phone")}
         </div>
         <div className="field">
-          <label htmlFor="f-area">
-            {type === "landlord" ? "Property area or postcode" : <>Preferred area <span className="optional">(optional)</span></>}
-          </label>
-          <input {...field("area")} required={type === "landlord"} maxLength={100} placeholder={type === "landlord" ? "e.g. Walthamstow, E17" : "e.g. near Canary Wharf"} />
+          <label htmlFor="f-area">Property area or postcode</label>
+          <input {...field("area")} key={`area-${prefill.area}`} defaultValue={prefill.area} required maxLength={100} placeholder="e.g. Walthamstow, E17" />
           {err("area")}
         </div>
       </div>
 
-      {type === "landlord" ? (
-        <div className="form-row">
-          <div className="field">
-            <label htmlFor="f-propertyType">Property type</label>
-            <select {...field("propertyType")} defaultValue="">
-              <option value="" disabled>Choose one</option>
-              {PROPERTY_TYPES.map((p) => <option key={p}>{p}</option>)}
-            </select>
-          </div>
-          <div className="field">
-            <label htmlFor="f-bedrooms">Bedrooms</label>
-            <select {...field("bedrooms")} defaultValue="">
-              <option value="" disabled>Choose one</option>
-              {BEDROOM_OPTIONS.map((b) => <option key={b}>{b}</option>)}
-            </select>
-          </div>
+      <div className="form-row">
+        <div className="field">
+          <label htmlFor="f-propertyType">Property type</label>
+          <select {...field("propertyType")} defaultValue="">
+            <option value="" disabled>Choose one</option>
+            {PROPERTY_TYPES.map((p) => <option key={p}>{p}</option>)}
+          </select>
         </div>
-      ) : (
-        <div className="form-row">
-          <div className="field">
-            <label htmlFor="f-dates">Dates <span className="optional">(optional)</span></label>
-            <input {...field("dates")} maxLength={100} placeholder="e.g. 12–17 March" />
-          </div>
-          <div className="field">
-            <label htmlFor="f-guests">Number of guests <span className="optional">(optional)</span></label>
-            <input {...field("guests")} inputMode="numeric" maxLength={20} />
-          </div>
+        <div className="field">
+          <label htmlFor="f-bedrooms">Bedrooms</label>
+          <select {...field("bedrooms")} key={`bed-${prefill.bedrooms}`} defaultValue={prefill.bedrooms}>
+            <option value="" disabled>Choose one</option>
+            {BEDROOM_OPTIONS.map((b) => <option key={b}>{b}</option>)}
+          </select>
         </div>
-      )}
+      </div>
 
       <div className="field">
         <label htmlFor="f-message">Message</label>
@@ -146,9 +135,7 @@ export function ContactForm({ initialType = "landlord", allowSwitch = true }: { 
           {...field("message")}
           required
           maxLength={3000}
-          placeholder={type === "landlord"
-            ? "Tell us a little about the property: when it's available, its condition, anything we should know."
-            : "Tell us about your trip: purpose, who's coming, anything you need."}
+          placeholder="Tell us a little about the property: when it's available, its condition, anything we should know."
         />
         {err("message")}
       </div>
@@ -160,7 +147,7 @@ export function ContactForm({ initialType = "landlord", allowSwitch = true }: { 
       </div>
 
       <button type="submit" className="btn btn--primary" disabled={status === "sending"}>
-        {status === "sending" ? "Sending…" : type === "landlord" ? "Request my free appraisal" : "Send enquiry"}
+        {status === "sending" ? "Sending…" : <>Request my free appraisal <IconArrow /></>}
       </button>
       <p className="form-note">
         We only use your details to reply to this enquiry. See our <Link href="/privacy">privacy notice</Link>.

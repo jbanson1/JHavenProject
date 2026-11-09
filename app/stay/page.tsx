@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { site } from "@/site.config";
 import { Photo } from "@/components/Photo";
-import { ContactForm } from "@/components/ContactForm";
-import { PhotoHero, SectionHead } from "@/components/Sections";
+import { IconArrow } from "@/components/Icons";
+import { Checklist, Hero, Kicker, SectionHead } from "@/components/Sections";
 import type { Scene } from "@/components/Photo";
 
 export const metadata: Metadata = {
@@ -17,28 +17,42 @@ const homes: { title: string; meta: string; tag: string; scene: Scene }[] = [
   { title: "Cosy family home", meta: "Sleeps 6 · Garden · Free parking", tag: "Families", scene: "kitchen" },
 ];
 
-export default function Stay() {
+function BookingButtons({ light = false }: { light?: boolean }) {
   const { airbnb, bookingCom } = site.bookingLinks;
+  if (!airbnb && !bookingCom) return null;
+  return (
+    <div className="btn-row">
+      {airbnb && (
+        <a className="btn btn--airbnb" href={airbnb} target="_blank" rel="noopener noreferrer">
+          Book on Airbnb <IconArrow />
+        </a>
+      )}
+      {bookingCom && (
+        <a className={`btn ${light ? "btn--outline-light" : "btn--ghost"}`} href={bookingCom} target="_blank" rel="noopener noreferrer">
+          Book on Booking.com
+        </a>
+      )}
+    </div>
+  );
+}
+
+export default function Stay() {
   return (
     <>
-      <PhotoHero
+      <Hero
         short
         photo={site.photos.city}
         scene="exterior"
+        kicker="Stay with us"
         title="Feel at home, wherever work takes you"
         lead="Fully furnished, professionally cleaned homes for short and medium stays. Better space and value than a hotel, with everything you need."
       >
-        {(airbnb || bookingCom) && (
-          <div className="btn-row" style={{ justifyContent: "center" }}>
-            {airbnb && <a className="btn btn--light" href={airbnb} target="_blank" rel="noopener noreferrer">Book on Airbnb</a>}
-            {bookingCom && <a className="btn btn--outline-light" href={bookingCom} target="_blank" rel="noopener noreferrer">Book on Booking.com</a>}
-          </div>
-        )}
-      </PhotoHero>
+        <BookingButtons light />
+      </Hero>
 
       <section className="section">
         <div className="container">
-          <SectionHead center eyebrow="Our homes" title="A taste of where you could stay" lead="Every home has fast Wi-Fi, a proper workspace, quality linen and self check-in." />
+          <SectionHead eyebrow="Our homes" title="A taste of where you could stay" lead="Every home has fast Wi-Fi, a proper workspace, quality linen and self check-in." />
           <div className="grid grid--3">
             {homes.map((h, i) => (
               <article key={h.title} className="property-card">
@@ -55,15 +69,20 @@ export default function Stay() {
         </div>
       </section>
 
-      <section className="section section--sand" id="enquire">
-        <div className="container contact-grid">
+      <section className="section section--sand" id="book">
+        <div className="container split">
           <div>
-            <span className="pill-label">Enquire</span>
-            <h2>Looking for somewhere to stay?</h2>
-            <p className="lead">Tell us your dates and what you need. We&apos;ll reply with available homes and prices, usually the same day.</p>
-            <p>Booking for a team or a longer project? Ask about our corporate rates.</p>
+            <Kicker>Book a stay</Kicker>
+            <h2>Check availability and book on Airbnb</h2>
+            <p className="lead">All our homes are listed on Airbnb, where you can see photos, prices, reviews and live availability, and book securely.</p>
+            <Checklist items={["Self check-in at any time", "Professionally cleaned between every stay", "Weekly and monthly discounts on longer stays"]} />
+            <div className="mt-lg">
+              <BookingButtons />
+            </div>
           </div>
-          <ContactForm initialType="guest" allowSwitch={false} />
+          <div className="split__media">
+            <Photo src={site.photos.kitchen} alt="A modern kitchen in one of our homes" scene="kitchen" className="media--wide" />
+          </div>
         </div>
       </section>
     </>

@@ -56,7 +56,7 @@ export function Header() {
             </Link>
           ))}
           <Link href="/contact" className="btn btn--primary">
-            Get a quote
+            Free appraisal
           </Link>
         </nav>
       </div>

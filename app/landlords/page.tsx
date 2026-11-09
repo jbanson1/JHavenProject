@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { site } from "@/site.config";
 import { Photo } from "@/components/Photo";
-import { ArrowButton, Benefits, Checklist, CtaBand, FaqList, PhotoHero, SectionHead, Steps } from "@/components/Sections";
+import { ArrowButton, Benefits, Checklist, Compare, CtaBand, FaqSection, Hero, SectionHead, Steps } from "@/components/Sections";
 
 export const metadata: Metadata = {
   title: "For landlords",
@@ -11,21 +11,22 @@ export const metadata: Metadata = {
 export default function Landlords() {
   return (
     <>
-      <PhotoHero
+      <Hero
         short
         photo={site.photos.handshake}
+        kicker="For landlords"
         title="A tenant you can rely on, for years"
         lead="We become your tenant on a fixed-term company let, then take care of everything else. Fixed rent, paid on time, every month."
       >
         <div className="btn-row">
           <ArrowButton href="/contact">Get a guaranteed rent offer</ArrowButton>
         </div>
-      </PhotoHero>
+      </Hero>
 
       <section className="section">
         <div className="container split">
           <div>
-            <span className="pill-label">The arrangement</span>
+            <span className="kicker">The arrangement</span>
             <h2>What rent-to-rent means for you</h2>
             <p className="lead">
               Instead of letting to a household, you let to us. We furnish the property and host short and medium stays for professionals, contractors and visitors.
@@ -48,7 +49,7 @@ export default function Landlords() {
 
       <section className="section section--sand">
         <div className="container">
-          <SectionHead center eyebrow="How it works" title="From first call to first payment" />
+          <SectionHead eyebrow="How it works" title="From first call to first payment" />
           <Steps />
         </div>
       </section>
@@ -59,7 +60,7 @@ export default function Landlords() {
             <Photo src={site.photos.refurb} alt="A calm, newly styled bedroom" scene="bedroom" className="media--tall" />
           </div>
           <div>
-            <span className="pill-label">Refurbishment</span>
+            <span className="kicker">Refurbishment</span>
             <h2>We improve your property, at our cost</h2>
             <p className="lead">Before the first guest arrives, we redecorate, furnish and style the home to a hotel-quality standard.</p>
             <p>
@@ -71,19 +72,15 @@ export default function Landlords() {
 
       <section className="section section--sand">
         <div className="container">
-          <SectionHead center eyebrow="Benefits" title="Why landlords work with us" />
+          <SectionHead eyebrow="Benefits" title="Why landlords work with us" />
           <Benefits />
-        </div>
-      </section>
-
-      <section className="section" id="faq">
-        <div className="container">
-          <SectionHead center eyebrow="FAQ" title="Landlord questions, answered" lead="Can't see your question? Call or message us. We're happy to talk it through." />
-          <div style={{ maxWidth: 860, margin: "0 auto" }}>
-            <FaqList />
+          <div className="mt-lg">
+            <Compare />
           </div>
         </div>
       </section>
+
+      <FaqSection id="faq" title="Landlord questions, answered" />
 
       <CtaBand />
     </>

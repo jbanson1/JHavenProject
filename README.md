@@ -13,11 +13,11 @@ Built with **Next.js 16** (App Router, TypeScript) and designed to run free on *
 
 | Route | What it's for |
 | ----- | ------------- |
-| `/` | Photo hero with "guaranteed rent" offer, who we are, key figures, what we do / who it's for, how it works (4 steps), benefits, reviews, FAQ preview, call to action |
+| `/` | Hero with a quick-appraisal card (postcode + bedrooms, carried into the contact form), key figures, who we are, "the usual way vs. with Haven" comparison, how it works timeline, benefits, reviews, FAQ preview, call to action |
 | `/landlords` | The full landlord proposition: the arrangement, steps, refurbishment, benefits, full FAQ (`/landlords#faq`) |
 | `/about` | Story, values, areas covered (London now, Jamaica coming soon) |
-| `/stay` | Guest page: example homes, optional Airbnb/Booking.com buttons, guest enquiry form |
-| `/contact` | Landlord appraisal form (with a switch to the guest form) and contact details |
+| `/stay` | Guest page: example homes and "Book on Airbnb" buttons (guests book on Airbnb, not through a form) |
+| `/contact` | Landlord appraisal form, contact details, and an Airbnb button for people looking to stay |
 | `/privacy` | Template GDPR privacy notice |
 
 Also generates `sitemap.xml`, `robots.txt`, page titles/descriptions and Open Graph tags.
@@ -34,7 +34,7 @@ npm run build
 
 ## Change the name, details, colours or photos
 
-- **Name, tagline, email, phone, WhatsApp, areas, booking links, social links, photos:**
+- **Name, tagline, email, phone, WhatsApp, areas, Airbnb link, social links, photos:**
   everything is in [`site.config.ts`](site.config.ts). Renaming from "Haven" to anything else is a
   one-line change.
 - **Colours and fonts:** the variables at the top of [`app/globals.css`](app/globals.css) (navy
@@ -89,6 +89,7 @@ Enquiries are POSTed to [`app/api/contact/route.ts`](app/api/contact/route.ts), 
 
 - [ ] Final business name in `site.config.ts` (and check the domain and Companies House availability)
 - [ ] Real email, phone, company name/number, and ICO registration in the privacy notice
+- [ ] Her Airbnb host profile or listing URL in `site.config.ts` → `bookingLinks.airbnb` (currently the Airbnb home page)
 - [ ] Replace placeholder figures and reviews with real ones, or hide them. Publishing invented
       reviews is illegal in the UK (DMCC Act 2024)
 - [ ] Founder story on `/about` in her own words
@@ -98,7 +99,7 @@ Enquiries are POSTed to [`app/api/contact/route.ts`](app/api/contact/route.ts), 
 
 ## Later (not in this demo)
 
-- Real property listings and links to the Airbnb / Booking.com pages
+- Real property listings linked to their individual Airbnb pages
 - Direct booking
 - Smart-lock / property-automation dashboard (check which devices offer APIs)
 - Moving from free tiers to paid plans for reliability once the business is trading

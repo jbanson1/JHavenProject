@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { site } from "@/site.config";
-import { Mark } from "./Icons";
 
 export function Footer() {
   const social = Object.entries(site.social).filter(([, url]) => url);
@@ -10,8 +9,7 @@ export function Footer() {
         <div className="footer-grid">
           <div>
             <Link href="/" className="wordmark">
-              <Mark className="wordmark__mark" />
-              {site.name}
+                  {site.name}
             </Link>
             <p style={{ maxWidth: 380 }}>{site.tagline}</p>
             <p style={{ margin: 0 }}>

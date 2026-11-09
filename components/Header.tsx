@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { site } from "@/site.config";
-import { IconClose, IconMenu, Mark } from "./Icons";
+import { IconClose, IconMenu } from "./Icons";
 
 const links = [
   { href: "/landlords", label: "For landlords" },
@@ -36,7 +36,6 @@ export function Header() {
     <header className={`site-header${scrolled ? " is-scrolled" : ""}`}>
       <div className="container site-header__inner">
         <Link href="/" className="wordmark" aria-label={`${site.name} home`}>
-          <Mark className="wordmark__mark" />
           {site.name}
         </Link>
         <button

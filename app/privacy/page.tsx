@@ -12,7 +12,6 @@ export default function Privacy() {
   return (
     <section className="section">
       <div className="container prose">
-        <span className="kicker">Legal</span>
         <h1 style={{ fontSize: "clamp(2rem, 4.5vw, 3rem)" }}>Privacy notice</h1>
         <p className="lead">This notice explains what personal information we collect through this website, why, and your rights.</p>
 

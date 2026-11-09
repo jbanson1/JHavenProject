@@ -1,32 +1,22 @@
 import Link from "next/link";
-import { Fragment, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { site } from "@/site.config";
 import { landlordFaqs, type Faq } from "@/content/faq";
 import { SHOW_PLACEHOLDER_PROOF, stats, testimonials } from "@/content/proof";
 import { BEDROOM_OPTIONS } from "@/lib/validate";
 import { Photo, type Scene } from "./Photo";
-import {
-  IconArrow, IconCalendar, IconChat, IconCheck, IconClose, IconHandshake, IconHome, IconKey, IconPound, IconShield, IconSparkle, IconTools,
-} from "./Icons";
 
-/** Button with a trailing arrow. */
-export function ArrowButton({ href, children, variant = "primary" }: { href: string; children: ReactNode; variant?: "primary" | "outline-light" | "light" }) {
+export function ButtonLink({ href, children, variant = "primary" }: { href: string; children: ReactNode; variant?: "primary" | "outline-light" | "light" | "ghost" }) {
   return (
     <Link href={href} className={`btn btn--${variant}`}>
       {children}
-      <IconArrow />
     </Link>
   );
 }
 
-export function Kicker({ children }: { children: ReactNode }) {
-  return <span className="kicker">{children}</span>;
-}
-
-export function SectionHead({ eyebrow, title, lead, center = false, id }: { eyebrow?: string; title: ReactNode; lead?: ReactNode; center?: boolean; id?: string }) {
+export function SectionHead({ title, lead, id }: { title: ReactNode; lead?: ReactNode; id?: string }) {
   return (
-    <div className={`section-head${center ? " section-head--center" : ""}`}>
-      {eyebrow && <Kicker>{eyebrow}</Kicker>}
+    <div className="section-head">
       <h2 id={id}>{title}</h2>
       {lead && <p className="lead">{lead}</p>}
     </div>
@@ -35,14 +25,13 @@ export function SectionHead({ eyebrow, title, lead, center = false, id }: { eyeb
 
 /** Photo hero with copy on the left and an optional card on the right. */
 export function Hero({
-  photo, scene = "living", kicker, title, lead, children, aside, short = false,
-}: { photo: string | null; scene?: Scene; kicker?: string; title: ReactNode; lead?: ReactNode; children?: ReactNode; aside?: ReactNode; short?: boolean }) {
+  photo, scene = "living", title, lead, children, aside, short = false,
+}: { photo: string | null; scene?: Scene; title: ReactNode; lead?: ReactNode; children?: ReactNode; aside?: ReactNode; short?: boolean }) {
   return (
     <section className={`hero-x${short ? " hero-x--short" : ""}`}>
       <Photo src={photo} alt="" scene={scene} priority sizes="100vw" />
       <div className="container hero-x__inner">
         <div>
-          {kicker && <Kicker>{kicker}</Kicker>}
           <h1>{title}</h1>
           {lead && <p className="lead">{lead}</p>}
           {children}
@@ -58,22 +47,22 @@ export function QuickAppraisal() {
   return (
     <div className="quick-card">
       <h2>Free rental appraisal</h2>
-      <p>See what we could pay you each month. No obligation.</p>
+      <p>Tell us where the property is and we&apos;ll come back with what we could pay each month.</p>
       <form action="/contact" method="get">
         <div className="field">
-          <label htmlFor="qa-area">Property postcode or area</label>
-          <input id="qa-area" name="area" placeholder="e.g. E17 or Walthamstow" maxLength={100} />
+          <label htmlFor="qa-area">Postcode or area</label>
+          <input id="qa-area" name="area" placeholder="e.g. E17" maxLength={100} />
         </div>
         <div className="field">
           <label htmlFor="qa-bedrooms">Bedrooms</label>
           <select id="qa-bedrooms" name="bedrooms" defaultValue="">
-            <option value="" disabled>Choose one</option>
+            <option value="" disabled>Choose</option>
             {BEDROOM_OPTIONS.map((b) => <option key={b}>{b}</option>)}
           </select>
         </div>
-        <button type="submit" className="btn btn--primary">Get my appraisal <IconArrow /></button>
+        <button type="submit" className="btn btn--primary">Continue</button>
       </form>
-      <p className="quick-card__note"><IconShield /> We reply within one working day</p>
+      <p className="quick-card__note">We reply within one working day.</p>
     </div>
   );
 }
@@ -96,60 +85,51 @@ export function StatsStrip({ float = false }: { float?: boolean }) {
   return float ? <div className="container stats-float">{strip}</div> : strip;
 }
 
-/** Photo with an overlapping highlight card. */
-export function MediaStack({ photo, alt, scene, cardTitle, cardBody }: { photo: string | null; alt: string; scene: Scene; cardTitle: string; cardBody: string }) {
-  return (
-    <div className="media-stack">
-      <Photo src={photo} alt={alt} scene={scene} className="media--tall" />
-      <div className="media-stack__card">
-        <IconCalendar />
-        <div><strong>{cardTitle}</strong><span>{cardBody}</span></div>
-      </div>
-    </div>
-  );
-}
-
 const comparison: [string, string, string][] = [
-  ["Rent", "Changes with every tenancy", "Fixed and guaranteed for years"],
-  ["Empty months", "Void periods with no income", "Paid whether it's booked or not"],
-  ["Fees", "10–15% management plus letting fees", "No fees at all"],
+  ["Rent", "Changes with every tenancy", "Fixed for the length of the agreement"],
+  ["Empty months", "No income between tenants", "Paid whether it's booked or not"],
+  ["Fees", "10–15% management plus letting fees", "None"],
   ["Maintenance", "Calls, quotes and call-outs", "Day-to-day upkeep handled by us"],
-  ["Bills & council tax", "Chasing tenants or paying between lets", "Paid by us throughout"],
-  ["Your property", "Wear and tear over time", "Refurbished and inspected regularly"],
+  ["Bills and council tax", "Chasing tenants or paying between lets", "Paid by us"],
+  ["Condition", "Wear and tear over time", "Refurbished and inspected regularly"],
 ];
 
 export function Compare() {
   return (
-    <div className="compare" role="table" aria-label={`Letting the usual way compared with letting to ${site.name}`}>
-      <div className="compare__row compare__head" role="row">
-        <div className="compare__label" role="columnheader"><span className="visually-hidden">Topic</span></div>
-        <div className="compare__old" role="columnheader">The usual way</div>
-        <div className="compare__new" role="columnheader">With {site.name}</div>
-      </div>
-      {comparison.map(([label, oldWay, newWay]) => (
-        <div className="compare__row" role="row" key={label}>
-          <div className="compare__label" role="rowheader">{label}</div>
-          <div className="compare__old" role="cell"><IconClose />{oldWay}</div>
-          <div className="compare__new" role="cell"><IconCheck />{newWay}</div>
-        </div>
-      ))}
-    </div>
+    <table className="compare">
+      <thead>
+        <tr>
+          <th scope="col"><span className="visually-hidden">Topic</span></th>
+          <th scope="col">A normal let</th>
+          <th scope="col" className="compare__new">Letting to {site.name}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {comparison.map(([label, oldWay, newWay]) => (
+          <tr key={label}>
+            <th scope="row">{label}</th>
+            <td>{oldWay}</td>
+            <td className="compare__new">{newWay}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 }
 
 export const steps = [
-  { title: "We view your property", body: "A free, no-obligation visit. We check the location, layout and condition, and tell you honestly if it suits short stays." },
-  { title: "We agree a fixed rent", body: "A clear written offer: guaranteed monthly rent for a fixed term, typically 3–5 years. No commission, no hidden fees." },
-  { title: "We refurbish and furnish", body: "At our cost, we decorate, furnish and style the home so guests love it and look after it." },
-  { title: "You get paid every month", body: "We run everything day to day. Your rent arrives on the same date every month." },
+  { title: "We view the property", body: "A free visit. We look at the location, layout and condition, and tell you honestly whether it works for short stays." },
+  { title: "We agree a fixed rent", body: "You get a written offer: a set monthly rent for a fixed term, usually 3–5 years." },
+  { title: "We get it ready", body: "We decorate, furnish and photograph the home at our own cost." },
+  { title: "You get paid", body: "We run it day to day. Your rent arrives on the same date every month." },
 ];
 
 export function Steps() {
   return (
-    <ol className="timeline">
+    <ol className="steps-row">
       {steps.map((s, i) => (
         <li key={s.title}>
-          <span className="timeline__num">{i + 1}</span>
+          <span className="steps-row__num">Step {i + 1}</span>
           <h3>{s.title}</h3>
           <p>{s.body}</p>
         </li>
@@ -159,75 +139,64 @@ export function Steps() {
 }
 
 export const benefits = [
-  { icon: IconPound, title: "Guaranteed monthly rent", body: "A fixed amount, paid on time, every month, whether the home is booked or not." },
-  { icon: IconCalendar, title: "No void periods", body: "No gaps between tenants and no months without income. Occupancy is our risk, not yours." },
-  { icon: IconTools, title: "Maintenance handled", body: "We look after day-to-day upkeep and minor repairs, and inspect the property regularly." },
-  { icon: IconSparkle, title: "Refurbished at our cost", body: "Your home is redecorated and furnished to a high standard, and handed back in great condition." },
-  { icon: IconShield, title: "Vetted, verified guests", body: "ID checks, review history and clear house rules. No parties, ever." },
-  { icon: IconHandshake, title: "Zero fees", body: "No management fees, no letting fees, no hidden costs. One point of contact for everything." },
+  { title: "Guaranteed monthly rent", body: "A fixed amount, paid on time every month, whether the home is booked or not." },
+  { title: "No void periods", body: "No gaps between tenants. If the property is empty for a week, that's our problem." },
+  { title: "Maintenance handled", body: "We look after day-to-day upkeep and minor repairs, and inspect the property regularly." },
+  { title: "Refurbished at our cost", body: "We redecorate and furnish the home, and hand it back in good condition." },
+  { title: "Guests are checked", body: "ID checks, past reviews and clear house rules. No parties." },
+  { title: "No fees", body: "No management or letting fees. One person to call about anything." },
 ];
 
 export function Benefits() {
   return (
-    <div className="feature-list">
-      {benefits.map(({ icon: Icon, title, body }) => (
+    <dl className="feature-list">
+      {benefits.map(({ title, body }) => (
         <div key={title} className="feature">
-          <div className="icon-badge"><Icon /></div>
-          <div>
-            <h3>{title}</h3>
-            <p>{body}</p>
-          </div>
+          <dt>{title}</dt>
+          <dd>{body}</dd>
         </div>
       ))}
-    </div>
+    </dl>
   );
 }
 
 /** Navy text panel beside a full-height photo. */
-export function SplitBand({ photo, scene = "exterior", kicker, title, body, href, label }: { photo: string | null; scene?: Scene; kicker?: string; title: string; body: string; href: string; label: string }) {
+export function SplitBand({ photo, scene = "exterior", title, body, href, label }: { photo: string | null; scene?: Scene; title: string; body: string; href: string; label: string }) {
   return (
     <section className="split-band">
       <div className="split-band__text">
-        {kicker && <Kicker>{kicker}</Kicker>}
         <h2>{title}</h2>
         <p>{body}</p>
-        <ArrowButton href={href} variant="light">{label}</ArrowButton>
+        <ButtonLink href={href} variant="light">{label}</ButtonLink>
       </div>
       <Photo src={photo} alt="" scene={scene} sizes="(max-width: 860px) 100vw, 50vw" />
     </section>
   );
 }
 
-function initials(name: string) {
-  return name.split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
-}
-
 export function Testimonials() {
   if (!SHOW_PLACEHOLDER_PROOF || testimonials.length === 0) return null;
   const [featured, ...rest] = testimonials;
-  const card = (t: (typeof testimonials)[number], cls = "") => (
-    <figure className={`review ${cls}`}>
-      <div>
-        <div className="review__stars" aria-label="5 out of 5 stars">★★★★★</div>
-        <blockquote>{t.quote}</blockquote>
-      </div>
-      <figcaption>
-        <span className="review__avatar" aria-hidden="true">{initials(t.name)}</span>
-        <span><strong>{t.name}</strong>{t.detail}</span>
-      </figcaption>
-    </figure>
-  );
   return (
     <section className="section section--sand" aria-labelledby="reviews-title">
       <div className="container">
         <div className="section-head">
-          <Kicker>Reviews</Kicker>
           <h2 id="reviews-title">What landlords and guests say</h2>
           <span className="placeholder-flag">Demo content: sample reviews to be replaced with real ones</span>
         </div>
         <div className="reviews">
-          {card(featured, "review--featured")}
-          <div className="reviews__side">{rest.slice(0, 2).map((t, i) => <Fragment key={i}>{card(t)}</Fragment>)}</div>
+          <figure className="review review--featured">
+            <blockquote>&ldquo;{featured.quote}&rdquo;</blockquote>
+            <figcaption><strong>{featured.name}</strong> · {featured.detail}</figcaption>
+          </figure>
+          <div className="reviews__side">
+            {rest.slice(0, 2).map((t, i) => (
+              <figure key={i} className="review">
+                <blockquote>&ldquo;{t.quote}&rdquo;</blockquote>
+                <figcaption><strong>{t.name}</strong> · {t.detail}</figcaption>
+              </figure>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -247,24 +216,21 @@ export function FaqList({ items = landlordFaqs }: { items?: Faq[] }) {
   );
 }
 
-/** Heading and help card on the left, questions on the right. */
-export function FaqSection({ items, title = "Questions landlords ask us", more = false, id }: { items?: Faq[]; title?: string; more?: boolean; id?: string }) {
+/** Heading and a short note on the left, questions on the right. */
+export function FaqSection({ items, title = "Common questions", more = false, id }: { items?: Faq[]; title?: string; more?: boolean; id?: string }) {
   return (
     <section className="section" id={id}>
       <div className="container faq-layout">
         <div className="faq-layout__aside">
-          <Kicker>FAQ</Kicker>
           <h2>{title}</h2>
-          <div className="help-card">
-            <h3>Still have a question?</h3>
-            <p>We&apos;re happy to talk it through, with no pressure and no jargon.</p>
-            <ArrowButton href="/contact">Ask us directly</ArrowButton>
-          </div>
+          <p className="lead">
+            Something we haven&apos;t covered? <Link href="/contact">Get in touch</Link> or call {site.contact.phone || "us"}.
+          </p>
         </div>
         <div>
           <FaqList items={items} />
           {more && (
-            <p className="mt-lg"><Link href="/landlords#faq">See all landlord questions →</Link></p>
+            <p className="mt-lg"><Link href="/landlords#faq">More landlord questions</Link></p>
           )}
         </div>
       </div>
@@ -273,10 +239,10 @@ export function FaqSection({ items, title = "Questions landlords ask us", more =
 }
 
 export function CtaBand({
-  title = "Find out what your property could earn you",
-  body = "Book a free, no-obligation appraisal. We'll visit, talk you through the numbers and send a written offer within 48 hours.",
+  title = "Find out what your property could earn",
+  body = "Book a free, no-obligation appraisal. We'll visit, go through the numbers with you and send a written offer within 48 hours.",
   href = "/contact",
-  label = "Get a guaranteed rent offer",
+  label = "Book an appraisal",
 }: { title?: string; body?: string; href?: string; label?: string }) {
   return (
     <section className="section" aria-label="Get in touch">
@@ -287,7 +253,7 @@ export function CtaBand({
             <p>{body}</p>
           </div>
           <div>
-            <ArrowButton href={href} variant="light">{label}</ArrowButton>
+            <ButtonLink href={href} variant="light">{label}</ButtonLink>
           </div>
         </div>
       </div>
@@ -302,28 +268,16 @@ export function AirbnbCard() {
   return (
     <div className="guest-card">
       <div>
-        <h3>Looking for a place to stay?</h3>
-        <p>See our homes, prices and availability on Airbnb.</p>
+        <h3>Looking for somewhere to stay?</h3>
+        <p>Our homes, prices and availability are on Airbnb.</p>
       </div>
-      <a className="btn btn--airbnb" href={url} target="_blank" rel="noopener noreferrer">
-        View on Airbnb <IconArrow />
-      </a>
+      <a className="btn btn--airbnb" href={url} target="_blank" rel="noopener noreferrer">View on Airbnb</a>
     </div>
   );
 }
 
-export function Checklist({ items }: { items: ReactNode[] }) {
-  return (
-    <ul className="checklist">
-      {items.map((it, i) => (
-        <li key={i}><IconCheck />{it}</li>
-      ))}
-    </ul>
-  );
-}
-
 export const values = [
-  { icon: IconChat, title: "Transparency", body: "Clear contracts, honest numbers and straight answers. If a property isn't right for short stays, we'll say so." },
-  { icon: IconHome, title: "Care", body: "We look after every home as if it were our own, because your property is your investment." },
-  { icon: IconKey, title: "Reliability", body: "Rent on time, every time, and a real person who picks up the phone when you need us." },
+  { title: "Straight answers", body: "Clear contracts and honest numbers. If a property isn't right for short stays, we'll tell you." },
+  { title: "We look after it", body: "We treat every home as if it were our own. It's your investment, and our reputation." },
+  { title: "We pick up the phone", body: "Rent on time, every time, and a real person to speak to when you need us." },
 ];

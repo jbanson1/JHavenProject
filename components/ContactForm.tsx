@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { BEDROOM_OPTIONS, PROPERTY_TYPES } from "@/lib/validate";
 import { site } from "@/site.config";
-import { IconArrow, IconCheck } from "./Icons";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -60,7 +59,6 @@ export function ContactForm() {
   if (status === "sent") {
     return (
       <div className="card form-success" ref={successRef} tabIndex={-1} role="status">
-        <div className="icon-badge"><IconCheck /></div>
         <h3>Thank you, we&apos;ve got your message</h3>
         <p style={{ color: "var(--muted)" }}>
           We&apos;ll be in touch within one working day to arrange a time to talk about your property.
@@ -81,7 +79,7 @@ export function ContactForm() {
     <form className="card form" onSubmit={onSubmit} noValidate>
       <div>
         <h2 style={{ fontSize: "1.5rem", marginBottom: 4 }}>Request a free appraisal</h2>
-        <p className="form-note">Takes about a minute. No obligation.</p>
+        <p className="form-note">No obligation. We reply within one working day.</p>
       </div>
 
       {formError && <div className="alert alert--error" role="alert">{formError}</div>}
@@ -147,7 +145,7 @@ export function ContactForm() {
       </div>
 
       <button type="submit" className="btn btn--primary" disabled={status === "sending"}>
-        {status === "sending" ? "Sending…" : <>Request my free appraisal <IconArrow /></>}
+        {status === "sending" ? "Sending…" : "Send"}
       </button>
       <p className="form-note">
         We only use your details to reply to this enquiry. See our <Link href="/privacy">privacy notice</Link>.

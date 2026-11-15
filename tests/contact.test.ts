@@ -32,7 +32,18 @@ describe("validateEnquiry", () => {
   it("reports missing and malformed fields", () => {
     const r = validateEnquiry({ name: "", email: "nope", phone: "abc", area: "", message: "hi" });
     expect(r.ok).toBe(false);
-    if (!r.ok) expect(Object.keys(r.errors).sort()).toEqual(["area", "email", "message", "name", "phone"]);
+    if (!r.ok) expect(Object.keys(r.errors).sort()).toEqual(["bedrooms", "email", "name", "phone", "propertyType"]);
+  });
+
+  it("requires a property type and bedrooms from the list", () => {
+    const r = validateEnquiry({ ...good, propertyType: "Castle", bedrooms: "" });
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(Object.keys(r.errors).sort()).toEqual(["bedrooms", "propertyType"]);
+  });
+
+  it("does not require an area or a message", () => {
+    const r = validateEnquiry({ ...good, area: "", message: "" });
+    expect(r.ok).toBe(true);
   });
 
   it("strips newlines from name and email (no header injection)", () => {
@@ -59,6 +70,12 @@ describe("POST /api/contact", () => {
   it("delivers a genuine enquiry (logged when email isn't configured)", async () => {
     const res = await post({ ...good, startedAt: Date.now() - 30_000 });
     const out = await POST(res);
+    expect(out.status).toBe(200);
+    expect(delivered()).toBe(true);
+  });
+
+  it("delivers an enquiry with no message (message is optional)", async () => {
+    const out = await POST(post({ ...good, message: "", area: "", startedAt: Date.now() - 30_000 }));
     expect(out.status).toBe(200);
     expect(delivered()).toBe(true);
   });

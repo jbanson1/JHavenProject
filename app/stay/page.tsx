@@ -6,14 +6,15 @@ import type { Scene } from "@/components/Photo";
 
 export const metadata: Metadata = {
   title: "Stay with us",
-  description: `Comfortable, fully furnished short and medium stays from ${site.name}. Ideal for business trips, contractors and visiting family.`,
+  description: `Furnished short and medium stays from ${site.name}, for work trips, contractors and visiting family.`,
 };
 
-// Placeholder homes for the demo. Replace with real listings when available.
-const homes: { title: string; meta: string; tag: string; scene: Scene }[] = [
-  { title: "Bright one-bed apartment", meta: "Sleeps 2 · Near the station · Fast Wi-Fi", tag: "Business stays", scene: "living" },
-  { title: "Calm two-bed flat", meta: "Sleeps 4 · Full kitchen · Washer-dryer", tag: "Contractors", scene: "bedroom" },
-  { title: "Cosy family home", meta: "Sleeps 6 · Garden · Free parking", tag: "Families", scene: "kitchen" },
+// What every home will have. Photos are illustrative until real ones are added
+// in site.config.ts → photos.stays.
+const expect: { title: string; body: string; scene: Scene }[] = [
+  { title: "Space to live", body: "A proper living room and kitchen, not just a bedroom.", scene: "living" },
+  { title: "Rest properly", body: "Good beds, quality linen and blackout blinds.", scene: "bedroom" },
+  { title: "Work from home", body: "Fast Wi-Fi and a desk, for stays of a few nights or a few months.", scene: "kitchen" },
 ];
 
 function BookingButtons({ light = false }: { light?: boolean }) {
@@ -22,9 +23,7 @@ function BookingButtons({ light = false }: { light?: boolean }) {
   return (
     <div className="btn-row">
       {airbnb && (
-        <a className="btn btn--airbnb" href={airbnb} target="_blank" rel="noopener noreferrer">
-          Book on Airbnb
-        </a>
+        <a className="btn btn--airbnb" href={airbnb} target="_blank" rel="noopener noreferrer">Book on Airbnb</a>
       )}
       {bookingCom && (
         <a className={`btn ${light ? "btn--outline-light" : "btn--ghost"}`} href={bookingCom} target="_blank" rel="noopener noreferrer">
@@ -36,6 +35,7 @@ function BookingButtons({ light = false }: { light?: boolean }) {
 }
 
 export default function Stay() {
+  const listed = Boolean(site.bookingLinks.airbnb || site.bookingLinks.bookingCom);
   return (
     <>
       <Hero
@@ -50,35 +50,46 @@ export default function Stay() {
 
       <section className="section">
         <div className="container">
-          <SectionHead title="Our homes" lead="Every home has fast Wi-Fi, a desk, good linen and self check-in." />
+          <SectionHead title="What to expect" lead="Every home comes with self check-in and is cleaned professionally between stays." />
           <div className="grid grid--3">
-            {homes.map((h, i) => (
+            {expect.map((h, i) => (
               <article key={h.title} className="property-card">
-                <Photo src={site.photos.stays[i] ?? null} alt={h.title} scene={h.scene} sizes="(max-width: 640px) 100vw, 33vw" />
+                <Photo src={site.photos.stays[i] ?? null} alt="" scene={h.scene} sizes="(max-width: 640px) 100vw, 33vw" />
                 <div className="property-card__body">
-                  <span className="tag">{h.tag}</span>
                   <h3>{h.title}</h3>
-                  <p className="property-card__meta">{h.meta}</p>
+                  <p className="property-card__meta">{h.body}</p>
                 </div>
               </article>
             ))}
           </div>
-          <p className="text-center"><span className="placeholder-flag">Demo content: example homes to be replaced with real listings</span></p>
         </div>
       </section>
 
       <section className="section section--sand" id="book">
         <div className="container split">
           <div>
-            <h2>Book on Airbnb</h2>
-            <p className="lead">All our homes are listed on Airbnb, with photos, prices, reviews and live availability.</p>
-            <p>Self check-in is available at any time, every home is professionally cleaned between stays, and longer stays get weekly and monthly discounts.</p>
-            <div className="mt-lg">
-              <BookingButtons />
-            </div>
+            {listed ? (
+              <>
+                <h2>Book a stay</h2>
+                <p className="lead">See photos, prices and live availability, and book securely.</p>
+                <div className="mt-lg"><BookingButtons /></div>
+              </>
+            ) : (
+              <>
+                <h2>Our first homes are coming soon</h2>
+                <p className="lead">
+                  We&apos;re getting our first homes ready now. They&apos;ll be bookable on Airbnb and Booking.com.
+                </p>
+                <p>
+                  Planning a stay or booking for a team? Email{" "}
+                  <a href={`mailto:${site.contact.email}?subject=${encodeURIComponent("Stay enquiry")}`}>{site.contact.email}</a>{" "}
+                  and we&apos;ll let you know when homes are available.
+                </p>
+              </>
+            )}
           </div>
           <div className="split__media">
-            <Photo src={site.photos.kitchen} alt="A modern kitchen in one of our homes" scene="kitchen" className="media--wide" />
+            <Photo src={site.photos.kitchen} alt="" scene="kitchen" className="media--wide" />
           </div>
         </div>
       </section>

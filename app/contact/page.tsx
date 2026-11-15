@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { site } from "@/site.config";
 import { ContactForm } from "@/components/ContactForm";
+import Link from "next/link";
 import { AirbnbCard } from "@/components/Sections";
 
 export const metadata: Metadata = {
@@ -33,7 +34,13 @@ export default function Contact() {
               <span><small>Areas</small>{site.areas.join(", ")}</span>
             </li>
           </ul>
-          <AirbnbCard />
+          {site.bookingLinks.airbnb ? (
+            <AirbnbCard />
+          ) : (
+            <p className="form-note mt-lg">
+              Looking for somewhere to stay? Our homes are <Link href="/stay">coming soon</Link>.
+            </p>
+          )}
         </div>
         <ContactForm />
       </div>

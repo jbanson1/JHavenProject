@@ -1,4 +1,7 @@
-/** Server-side validation for the contact form. Never trust the browser. */
+/**
+ * Server-side validation for the contact form. Never trust the browser.
+ * Required: name, email, property type and bedrooms. Area, phone and message are optional.
+ */
 
 /** A landlord's appraisal request. (Guests book through Airbnb, not this form.) */
 export type Enquiry = {
@@ -46,8 +49,8 @@ export function validateEnquiry(body: unknown): ValidationResult {
   if (name.length < 2) errors.name = "Please tell us your name.";
   if (!EMAIL_RE.test(email)) errors.email = "Please enter a valid email address.";
   if (phone && !PHONE_RE.test(phone)) errors.phone = "Please enter a valid phone number, or leave it blank.";
-  if (area.length < 2) errors.area = "Which area or postcode is the property in?";
-  if (message.length < 10) errors.message = "Please add a short message (at least 10 characters).";
+  if (!(PROPERTY_TYPES as readonly string[]).includes(propertyType)) errors.propertyType = "Please choose the property type.";
+  if (!(BEDROOM_OPTIONS as readonly string[]).includes(bedrooms)) errors.bedrooms = "Please choose the number of bedrooms.";
 
   if (Object.keys(errors).length) return { ok: false, errors };
 

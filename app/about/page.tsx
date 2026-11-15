@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { site } from "@/site.config";
 import { Photo } from "@/components/Photo";
-import { ButtonLink, CtaBand, SectionHead, StatsStrip, values } from "@/components/Sections";
+import { ButtonLink, CtaBand, KeyPoints, SectionHead, values } from "@/components/Sections";
 
 export const metadata: Metadata = {
   title: "About us",
@@ -32,14 +32,14 @@ export default function About() {
               So we bring the two together. We take on homes for the long term, put money into making them nice to live in, and run them properly. Owners get peace of mind and guests get a decent place to stay.
             </p>
             <p>
-              We&apos;re a small team. When you call, you speak to the person who looks after your property.
+              We&apos;re a small team. When you get in touch, you deal with the person who looks after your property.
             </p>
             <div className="btn-row mt-lg">
               <ButtonLink href="/contact">Get in touch</ButtonLink>
             </div>
           </div>
           <div className="split__media">
-            <Photo src={site.photos.about} alt="A living room in one of our homes" scene="living" className="media--tall" />
+            <Photo src={site.photos.about} alt="A furnished living room" scene="living" className="media--tall" />
           </div>
         </div>
       </section>
@@ -69,7 +69,7 @@ export default function About() {
               </>
             }
           />
-          <StatsStrip />
+          <KeyPoints />
         </div>
       </section>
 

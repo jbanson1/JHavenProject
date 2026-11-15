@@ -26,7 +26,7 @@ export function enquiryRows(e: Enquiry): [string, string][] {
 }
 
 export function enquirySubject(e: Enquiry): string {
-  return `New landlord enquiry: ${e.area} (${e.name})`;
+  return `New landlord enquiry from ${e.name}${e.area ? ` (${e.area})` : ""}`;
 }
 
 export async function sendEnquiry(e: Enquiry): Promise<DeliveryResult> {

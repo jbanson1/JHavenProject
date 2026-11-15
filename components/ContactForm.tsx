@@ -7,7 +7,7 @@ import { site } from "@/site.config";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
-/** Landlord appraisal form. Guests are sent to Airbnb instead (see AirbnbCard). */
+/** Landlord appraisal form. Required: name, email, property type, bedrooms. */
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -104,8 +104,8 @@ export function ContactForm() {
           {err("phone")}
         </div>
         <div className="field">
-          <label htmlFor="f-area">Property area or postcode</label>
-          <input {...field("area")} key={`area-${prefill.area}`} defaultValue={prefill.area} required maxLength={100} placeholder="e.g. Walthamstow, E17" />
+          <label htmlFor="f-area">Area or postcode <span className="optional">(optional)</span></label>
+          <input {...field("area")} key={`area-${prefill.area}`} defaultValue={prefill.area} maxLength={100} placeholder="e.g. Walthamstow, E17" />
           {err("area")}
         </div>
       </div>
@@ -113,25 +113,26 @@ export function ContactForm() {
       <div className="form-row">
         <div className="field">
           <label htmlFor="f-propertyType">Property type</label>
-          <select {...field("propertyType")} defaultValue="">
+          <select {...field("propertyType")} defaultValue="" required>
             <option value="" disabled>Choose one</option>
             {PROPERTY_TYPES.map((p) => <option key={p}>{p}</option>)}
           </select>
+          {err("propertyType")}
         </div>
         <div className="field">
           <label htmlFor="f-bedrooms">Bedrooms</label>
-          <select {...field("bedrooms")} key={`bed-${prefill.bedrooms}`} defaultValue={prefill.bedrooms}>
+          <select {...field("bedrooms")} key={`bed-${prefill.bedrooms}`} defaultValue={prefill.bedrooms} required>
             <option value="" disabled>Choose one</option>
             {BEDROOM_OPTIONS.map((b) => <option key={b}>{b}</option>)}
           </select>
+          {err("bedrooms")}
         </div>
       </div>
 
       <div className="field">
-        <label htmlFor="f-message">Message</label>
+        <label htmlFor="f-message">Message <span className="optional">(optional)</span></label>
         <textarea
           {...field("message")}
-          required
           maxLength={3000}
           placeholder="Tell us a little about the property: when it's available, its condition, anything we should know."
         />

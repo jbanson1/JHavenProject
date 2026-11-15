@@ -1,7 +1,7 @@
 import { site } from "@/site.config";
 import { Photo } from "@/components/Photo";
 import {
-  Benefits, ButtonLink, Compare, CtaBand, FaqSection, Hero, QuickAppraisal, SectionHead, SplitBand, StatsStrip, Steps, Testimonials,
+  Benefits, ButtonLink, Compare, CtaBand, FaqSection, Hero, KeyPoints, QuickAppraisal, SectionHead, SplitBand, Steps,
 } from "@/components/Sections";
 import { landlordFaqs } from "@/content/faq";
 
@@ -20,12 +20,12 @@ export default function Home() {
         </div>
       </Hero>
 
-      <StatsStrip float />
+      <KeyPoints float />
 
       <section className="section">
         <div className="container split split--reverse">
           <div className="split__media">
-            <Photo src={site.photos.about} alt="A living room in one of our homes" scene="living" className="media--tall" />
+            <Photo src={site.photos.about} alt="A furnished living room" scene="living" className="media--tall" />
           </div>
           <div>
             <h2>Hands-off income from your property</h2>
@@ -33,7 +33,7 @@ export default function Home() {
               {site.name} rents homes from landlords, gets them ready for guests and runs them day to day. You get a fixed rent and one person to deal with.
             </p>
             <p>
-              We handle the furnishing, bookings, cleaning, maintenance and bills. We inspect every home regularly and keep it to a higher standard than most long lets, so the property is looked after while it earns.
+              We handle the furnishing, bookings, cleaning, maintenance and bills. We inspect each home regularly and keep it to a high standard, so the property is looked after while it earns.
             </p>
             <div className="btn-row mt-lg">
               <ButtonLink href="/about" variant="ghost">About us</ButtonLink>
@@ -54,15 +54,15 @@ export default function Home() {
 
       <section className="section">
         <div className="container">
-          <SectionHead title="How it works" lead="Most landlords are being paid within a few weeks of the first visit." />
+          <SectionHead title="How it works" lead="Four steps from the first visit to your first payment." />
           <Steps />
         </div>
       </section>
 
       <SplitBand
         photo={site.photos.city}
-        title="Who stays in our homes"
-        body="Mostly people working in the city: contractors, consultants and staff on placement, plus families visiting for a week or two. They want a proper home rather than a hotel room."
+        title="Who our homes are for"
+        body="People working in the city, such as contractors, consultants and staff on placement, and families visiting for a week or two. They want a proper home rather than a hotel room."
         href="/landlords"
         label="More for landlords"
       />
@@ -76,8 +76,6 @@ export default function Home() {
           <Benefits />
         </div>
       </section>
-
-      <Testimonials />
 
       <FaqSection items={landlordFaqs.slice(0, 5)} more />
 

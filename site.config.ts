@@ -14,8 +14,9 @@ export const site = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://haven-demo.vercel.app",
 
   contact: {
-    email: "hello@example.com", // TODO: replace with the real inbox
-    phone: "+44 0000 000000", // TODO: replace, or set to "" to hide
+    email: "info@inhavenest.com",
+    /** No phone number for now: enquiries go through the form. Add one here to show it. */
+    phone: "",
     hours: "Mon–Sat, 9am–6pm",
     /** WhatsApp number in international format without "+" or spaces, e.g. "447700900123". "" hides the button. */
     whatsapp: "",
@@ -27,11 +28,11 @@ export const site = {
   futureAreas: ["Jamaica"],
 
   /**
-   * Guest booking links. Guests are sent to Airbnb instead of the contact form.
-   * TODO: replace with her Airbnb host profile or listing URL. "" hides the button.
+   * Guest booking links. Add her Airbnb listing or host profile URL here once it
+   * exists and "Book on Airbnb" buttons appear on the Stay and Contact pages.
    */
   bookingLinks: {
-    airbnb: "https://www.airbnb.co.uk/",
+    airbnb: "",
     bookingCom: "",
   },
 

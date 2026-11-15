@@ -6,18 +6,19 @@ them to get in touch, with a secondary enquiry route for guests.
 
 Built with **Next.js 16** (App Router, TypeScript) and designed to run free on **Vercel**.
 
-> ⚠️ **Demo content.** Figures, reviews, example homes, contact details and the founder story are
-> placeholders, clearly flagged on the page. Replace them before going live (see *Before launch*).
+> **Still to come from the client:** registered company name and number, registered office address,
+> real property photos and the founder story (see *Before launch*). There are no invented figures or
+> reviews on the site.
 
 ## Pages
 
 | Route | What it's for |
 | ----- | ------------- |
-| `/` | Hero with a quick-appraisal card (postcode + bedrooms, carried into the contact form), key figures, who we are, "the usual way vs. with Haven" comparison, how it works timeline, benefits, reviews, FAQ preview, call to action |
+| `/` | Hero with a quick-appraisal card (postcode + bedrooms, carried into the contact form), key points (fixed-term agreements, rent on the same date, free appraisal, no fees), who we are, "the usual way vs. with Haven" comparison, how it works, benefits, FAQ preview, call to action |
 | `/landlords` | The full landlord proposition: the arrangement, steps, refurbishment, benefits, full FAQ (`/landlords#faq`) |
 | `/about` | Story, values, areas covered (London now, Jamaica coming soon) |
-| `/stay` | Guest page: example homes and "Book on Airbnb" buttons (guests book on Airbnb, not through a form) |
-| `/contact` | Landlord appraisal form, contact details, and an Airbnb button for people looking to stay |
+| `/stay` | Guest page: what every home includes, and "coming soon" with the email address until an Airbnb listing exists (then "Book on Airbnb" buttons appear) |
+| `/contact` | Landlord appraisal form (required: name, email, property type, bedrooms) and contact details. No phone number: enquiries go through the form |
 | `/privacy` | Template GDPR privacy notice |
 
 Also generates `sitemap.xml`, `robots.txt`, page titles/descriptions and Open Graph tags.
@@ -41,8 +42,8 @@ npm run build
   `--accent`, cream `--sand`, gold `--clay`). Fonts are set in [`app/layout.tsx`](app/layout.tsx)
   (Plus Jakarta Sans headings, Inter body).
 - **FAQ:** [`content/faq.ts`](content/faq.ts).
-- **Figures and reviews:** [`content/proof.ts`](content/proof.ts). Set `SHOW_PLACEHOLDER_PROOF = false`
-  to hide them until real ones exist.
+- **Key points strip:** [`content/keyPoints.ts`](content/keyPoints.ts). Keep these to true statements;
+  add real figures and landlord reviews once there's a track record.
 - **Photos:** free Unsplash stock in `public/images/` (list and sources in
   [`public/images/README.md`](public/images/README.md)). Overwrite the files with real property photos
   when available. A drawn placeholder appears for any photo set to `null`.
@@ -88,10 +89,10 @@ Enquiries are POSTed to [`app/api/contact/route.ts`](app/api/contact/route.ts), 
 ## Before launch
 
 - [ ] Final business name in `site.config.ts` (and check the domain and Companies House availability)
-- [ ] Real email, phone, company name/number, and ICO registration in the privacy notice
-- [ ] Her Airbnb host profile or listing URL in `site.config.ts` → `bookingLinks.airbnb` (currently the Airbnb home page)
-- [ ] Replace placeholder figures and reviews with real ones, or hide them. Publishing invented
-      reviews is illegal in the UK (DMCC Act 2024)
+- [x] Contact email set to info@inhavenest.com (no phone number, by choice)
+- [ ] Registered company name, company number and registered office address (footer and privacy notice), plus ICO registration
+- [ ] Her Airbnb listing URL in `site.config.ts` → `bookingLinks.airbnb` once it exists
+- [ ] Real reviews and figures once there's a track record (never invented ones; that's illegal in the UK under the DMCC Act 2024)
 - [ ] Founder story on `/about` in her own words
 - [ ] Have the FAQ answers and privacy notice checked against the real agreement (ideally by a solicitor)
 - [ ] Swap stock photos for real properties as they come on board

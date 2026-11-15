@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { site } from "@/site.config";
 import { landlordFaqs, type Faq } from "@/content/faq";
-import { SHOW_PLACEHOLDER_PROOF, stats, testimonials } from "@/content/proof";
+import { keyPoints } from "@/content/keyPoints";
 import { BEDROOM_OPTIONS } from "@/lib/validate";
 import { Photo, type Scene } from "./Photo";
 
@@ -67,20 +67,17 @@ export function QuickAppraisal() {
   );
 }
 
-export function StatsStrip({ float = false }: { float?: boolean }) {
-  if (!SHOW_PLACEHOLDER_PROOF) return null;
+/** Short, true promises (no figures until there's a track record to back them). */
+export function KeyPoints({ float = false }: { float?: boolean }) {
   const strip = (
-    <>
-      <div className="stats">
-        {stats.map((s) => (
-          <div key={s.label} className="stat">
-            <span className="stat__value">{s.value}</span>
-            <span className="stat__label">{s.label}</span>
-          </div>
-        ))}
-      </div>
-      <p className="text-center" style={{ margin: 0 }}><span className="placeholder-flag">Demo figures: confirm or replace before launch</span></p>
-    </>
+    <ul className="points">
+      {keyPoints.map((p) => (
+        <li key={p.title} className="point">
+          <strong>{p.title}</strong>
+          <span>{p.body}</span>
+        </li>
+      ))}
+    </ul>
   );
   return float ? <div className="container stats-float">{strip}</div> : strip;
 }
@@ -174,35 +171,6 @@ export function SplitBand({ photo, scene = "exterior", title, body, href, label 
   );
 }
 
-export function Testimonials() {
-  if (!SHOW_PLACEHOLDER_PROOF || testimonials.length === 0) return null;
-  const [featured, ...rest] = testimonials;
-  return (
-    <section className="section section--sand" aria-labelledby="reviews-title">
-      <div className="container">
-        <div className="section-head">
-          <h2 id="reviews-title">What landlords and guests say</h2>
-          <span className="placeholder-flag">Demo content: sample reviews to be replaced with real ones</span>
-        </div>
-        <div className="reviews">
-          <figure className="review review--featured">
-            <blockquote>&ldquo;{featured.quote}&rdquo;</blockquote>
-            <figcaption><strong>{featured.name}</strong> · {featured.detail}</figcaption>
-          </figure>
-          <div className="reviews__side">
-            {rest.slice(0, 2).map((t, i) => (
-              <figure key={i} className="review">
-                <blockquote>&ldquo;{t.quote}&rdquo;</blockquote>
-                <figcaption><strong>{t.name}</strong> · {t.detail}</figcaption>
-              </figure>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 export function FaqList({ items = landlordFaqs }: { items?: Faq[] }) {
   return (
     <div className="faq">
@@ -224,7 +192,8 @@ export function FaqSection({ items, title = "Common questions", more = false, id
         <div className="faq-layout__aside">
           <h2>{title}</h2>
           <p className="lead">
-            Something we haven&apos;t covered? <Link href="/contact">Get in touch</Link> or call {site.contact.phone || "us"}.
+            Something we haven&apos;t covered? <Link href="/contact">Send us a message</Link>
+            {site.contact.phone && <> or call {site.contact.phone}</>} and we&apos;ll get back to you.
           </p>
         </div>
         <div>
@@ -279,5 +248,5 @@ export function AirbnbCard() {
 export const values = [
   { title: "Straight answers", body: "Clear contracts and honest numbers. If a property isn't right for short stays, we'll tell you." },
   { title: "We look after it", body: "We treat every home as if it were our own. It's your investment, and our reputation." },
-  { title: "We pick up the phone", body: "Rent on time, every time, and a real person to speak to when you need us." },
+  { title: "We get back to you", body: "Rent on time, every time, and a real person to deal with when you need us." },
 ];

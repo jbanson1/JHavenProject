@@ -3,8 +3,8 @@
  *
  * 1. Honeypot: a hidden "company" field people never see. Bots fill it in.
  * 2. Speed: a person takes more than a few seconds to fill in the form.
- * 3. Dictionary: the message is checked word by word against an English
- *    dictionary (~275k words). Keyboard-mash like "asdkjh qwpoeiru" fails.
+ * 3. Dictionary: the message (when there is one) is checked word by word against
+ *    an English dictionary (~275k words). Keyboard-mash like "asdkjh qwpoeiru" fails.
  * 4. Links: genuine enquiries rarely contain several URLs.
  *
  * Spam is dropped silently: the sender still sees "thanks", so bots learn nothing.
@@ -88,6 +88,7 @@ export function checkSpam(input: {
   if (input.startedAt === null || now - input.startedAt < MIN_FILL_MS) return { spam: true, reason: "too-fast" };
   const links = input.message.match(/https?:\/\/|www\./gi)?.length ?? 0;
   if (links > MAX_LINKS) return { spam: true, reason: "links" };
-  if (isGibberish(input.message)) return { spam: true, reason: "gibberish" };
+  // The message is optional, so only run the dictionary check when there are real words to check.
+  if (scoreText(input.message).words > 0 && isGibberish(input.message)) return { spam: true, reason: "gibberish" };
   return { spam: false };
 }

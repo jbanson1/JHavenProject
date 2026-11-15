@@ -48,6 +48,11 @@ describe("checkSpam", () => {
     expect(checkSpam({ ...human, message: linky })).toEqual({ spam: true, reason: "links" });
   });
 
+  it("passes an empty or very short message (the message is optional)", () => {
+    expect(checkSpam({ ...human, message: "" })).toEqual({ spam: false });
+    expect(checkSpam({ ...human, message: "hi" })).toEqual({ spam: false });
+  });
+
   it("drops gibberish", () => {
     expect(checkSpam({ ...human, message: "qwpoeiru zxmcnvb lkjhgf asdkjh" })).toEqual({ spam: true, reason: "gibberish" });
   });

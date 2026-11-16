@@ -150,7 +150,14 @@ describe("POST /api/contact", () => {
     for (let i = 0; i < 3; i++) expect((await POST(post(body, "9.9.9.9"))).status).toBe(200);
     const blocked = await POST(post(body, "9.9.9.9"));
     expect(blocked.status).toBe(429);
+    expect(warnSpy.mock.calls.some((c: unknown[]) => String(c[0]).startsWith("[contact] rejected (rate limit)"))).toBe(true);
     expect(Number(blocked.headers.get("Retry-After"))).toBeGreaterThan(0);
+  });
+
+  it("logs which check rejected a submission, without what was typed", async () => {
+    await POST(post({ ...good, email: "bad", phone: "01234", startedAt: Date.now() - 30_000 }));
+    const line = warnSpy.mock.calls.map((c: unknown[]) => String(c[0])).find((l: string) => l.includes("rejected"));
+    expect(line).toBe("[contact] rejected (validation): fields email, phone");
   });
 
   it("rejects an email whose domain can't receive mail", async () => {
@@ -159,6 +166,7 @@ describe("POST /api/contact", () => {
     expect(out.status).toBe(422);
     expect((await out.json()).errors.email).toContain("no-such-domain-xyz.co.uk");
     expect(delivered()).toBe(false);
+    expect(warnSpy.mock.calls.some((c: unknown[]) => String(c[0]) === "[contact] rejected (email domain has no mail server): no-such-domain-xyz.co.uk")).toBe(true);
   });
 
   it("drops repetitive filler (Forge writing check) but returns ok", async () => {

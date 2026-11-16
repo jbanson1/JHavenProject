@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { site } from "@/site.config";
 import { landlordFaqs, type Faq } from "@/content/faq";
 import { keyPoints } from "@/content/keyPoints";
-import { BEDROOM_OPTIONS } from "@/lib/validate";
+import { BEDROOM_OPTIONS } from "@/lib/options";
 import { Photo, type Scene } from "./Photo";
 
 export function ButtonLink({ href, children, variant = "primary" }: { href: string; children: ReactNode; variant?: "primary" | "outline-light" | "light" | "ghost" }) {

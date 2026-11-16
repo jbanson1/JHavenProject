@@ -55,20 +55,26 @@ npm run build
 Enquiries are POSTed to [`app/api/contact/route.ts`](app/api/contact/route.ts), which:
 
 1. **Validates** every field on the server ([`lib/validate.ts`](lib/validate.ts)).
-2. **Filters spam** ([`lib/spam.ts`](lib/spam.ts)):
+2. **Validates like the JMB Digital Forge form**: stricter email format plus a check that the
+   domain can receive mail (fails open on DNS trouble), optional phone checked against the chosen
+   country with libphonenumber, hard length caps, 3 submissions per 10 minutes per IP.
+3. **Filters spam** ([`lib/spam.ts`](lib/spam.ts)):
    - a hidden **honeypot** field that only bots fill in,
    - a **minimum fill time** (forms sent in under 3 seconds are bots),
-   - a **dictionary check**: each word of the message is looked up in a ~275,000-word English
-     dictionary; messages that are mostly made-up "mumbo-jumbo" (or keyboard mash like `asdkjh`)
-     are rejected,
+   - a **writing check** (from JMB Digital Forge, [`lib/message-quality.ts`](lib/message-quality.ts)):
+     keyboard mash, unpronounceable runs and repeated filler are rejected, while names, brands and
+     acronyms pass,
    - a limit on links in the message,
-   - a light per-IP **rate limit** ([`lib/rateLimit.ts`](lib/rateLimit.ts)).
+   - a light per-IP **rate limit** ([`lib/rate-limit.ts`](lib/rate-limit.ts)).
 
    Spam is dropped **silently**: the sender still sees "thank you", so bots learn nothing.
-3. **Emails** the enquiry ([`lib/email.ts`](lib/email.ts)) to **info@inhavenest.com** (`site.contact.email`)
+4. **Emails** the enquiry ([`lib/email.ts`](lib/email.ts)) to **info@inhavenest.com** (`site.contact.email`)
    via [Resend](https://resend.com)'s free tier (100 emails a day), with "reply-to" set to the
    sender. If no API key is set, the enquiry is written to the server log instead. If sending fails,
    the visitor is asked to email instead and the enquiry is still written to the log.
+5. **Thanks the landlord** by email ("we'll be in contact within one working day"), with reply-to
+   info@inhavenest.com. This only sends once the sender (`contact.emailFrom`) is on a domain
+   verified in Resend; Resend's shared test sender can't email visitors.
 
 ### Turn on email delivery
 

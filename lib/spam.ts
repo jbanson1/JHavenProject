@@ -2,7 +2,8 @@
  * Spam filter for the contact form. SERVER ONLY (imports message-quality.ts,
  * whose rules must not be shipped to the browser).
  *
- * 1. Honeypot: a hidden "company" field people never see. Bots fill it in.
+ * 1. Honeypot: a hidden "hp_ref" field people never see. Bots fill it in. It must
+ *    not use a name autofill recognises (name, company, email, phone, address...).
  * 2. Speed: a person takes more than a few seconds to fill in the form.
  * 3. Links: genuine enquiries rarely contain several URLs.
  * 4. Writing quality (from JMB Digital Forge, lib/message-quality.ts): when a

@@ -193,10 +193,12 @@ export function ContactForm() {
         {err("message")}
       </div>
 
-      {/* Honeypot: hidden from people, irresistible to bots. */}
+      {/* Honeypot: hidden from people, irresistible to bots. Deliberately given a
+          name and label browsers don't autofill (a field called "company" was being
+          filled by Chrome autofill, so real enquiries were dropped as spam). */}
       <div className="hp-field" aria-hidden="true">
-        <label htmlFor="f-company">Company</label>
-        <input id="f-company" name="company" tabIndex={-1} autoComplete="off" />
+        <label htmlFor="f-hp">Leave this field empty</label>
+        <input id="f-hp" name="hp_ref" type="text" tabIndex={-1} autoComplete="off" data-1p-ignore="true" data-lpignore="true" data-bwignore="true" data-form-type="other" />
       </div>
 
       <button type="submit" className="btn btn--primary" disabled={status === "sending"}>

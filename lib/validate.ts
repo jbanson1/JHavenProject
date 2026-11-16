@@ -109,6 +109,8 @@ export function validateEnquiry(body: unknown): ValidationResult {
   return {
     ok: true,
     enquiry: { name, email, phone, phoneE164, message, area, propertyType, bedrooms },
-    spam: { honeypot: typeof b.company === "string" ? b.company : "", startedAt },
+    // Only the hp_ref field counts. The old "company" honeypot is ignored because
+    // browser autofill fills fields with that name.
+    spam: { honeypot: typeof b.hp_ref === "string" ? b.hp_ref : "", startedAt },
   };
 }

@@ -19,7 +19,7 @@ const good = {
   propertyType: "House",
   bedrooms: "3",
   message: "Hi, my tenants leave in March and I would like to hear about your guaranteed rent offer.",
-  company: "",
+  hp_ref: "",
 };
 
 function post(body: unknown, ip = "1.2.3.4") {
@@ -126,8 +126,15 @@ describe("POST /api/contact", () => {
     expect(delivered()).toBe(false);
   });
 
+  it("delivers an enquiry whose browser autofilled a 'company' value (old honeypot name)", async () => {
+    const out = await POST(post({ ...good, company: "Banson Ltd", startedAt: Date.now() - 30_000 }));
+    expect(out.status).toBe(200);
+    expect(delivered()).toBe(true);
+    expect(dropped()).toBe(false);
+  });
+
   it("silently drops honeypot submissions", async () => {
-    const out = await POST(post({ ...good, company: "Spam Inc", startedAt: Date.now() - 30_000 }));
+    const out = await POST(post({ ...good, hp_ref: "Spam Inc", startedAt: Date.now() - 30_000 }));
     expect(out.status).toBe(200);
     expect(delivered()).toBe(false);
   });

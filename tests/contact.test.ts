@@ -106,6 +106,28 @@ describe("POST /api/contact", () => {
     expect((await POST(post(body, "9.9.9.9"))).status).toBe(429);
   });
 
+  it("emails info@inhavenest.com by default once a Resend key is set", async () => {
+    process.env.RESEND_API_KEY = "re_test";
+    const fetchMock = vi.fn(async () => new Response(JSON.stringify({ id: "1" }), { status: 200 }));
+    vi.stubGlobal("fetch", fetchMock);
+    const out = await POST(post({ ...good, startedAt: Date.now() - 30_000 }));
+    expect(out.status).toBe(200);
+    const [, init] = fetchMock.mock.calls[0] as unknown as [string, RequestInit];
+    const sent = JSON.parse(String(init.body));
+    expect(sent.to).toEqual(["info@inhavenest.com"]);
+    expect(sent.from).toContain("onboarding@resend.dev");
+  });
+
+  it("keeps the enquiry in the logs and tells the visitor when sending fails", async () => {
+    process.env.RESEND_API_KEY = "re_test";
+    vi.stubGlobal("fetch", vi.fn(async () => new Response("domain not verified", { status: 403 })));
+    const errSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const out = await POST(post({ ...good, startedAt: Date.now() - 30_000 }));
+    expect(out.status).toBe(502);
+    expect(errSpy.mock.calls.some((c: unknown[]) => String(c[0]).includes("Sam Patel"))).toBe(true);
+    errSpy.mockRestore();
+  });
+
   it("sends through Resend when configured", async () => {
     process.env.RESEND_API_KEY = "re_test";
     process.env.CONTACT_TO_EMAIL = "owner@example.com";

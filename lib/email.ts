@@ -1,7 +1,8 @@
 /**
- * Sends an enquiry by email through Resend's HTTP API (free tier: 100 emails a day).
- * If RESEND_API_KEY isn't set, the enquiry is written to the server log instead,
- * so the demo works with no setup at all.
+ * Sends an enquiry by email through Resend's HTTP API (free tier: 100 emails a day)
+ * to site.contact.email (info@inhavenest.com). CONTACT_TO_EMAIL / CONTACT_FROM_EMAIL
+ * env vars override the recipient and sender if ever needed.
+ * If RESEND_API_KEY isn't set, the enquiry is written to the server log instead.
  */
 import { site } from "@/site.config";
 import type { Enquiry } from "./validate";
@@ -31,12 +32,12 @@ export function enquirySubject(e: Enquiry): string {
 
 export async function sendEnquiry(e: Enquiry): Promise<DeliveryResult> {
   const key = process.env.RESEND_API_KEY;
-  const to = process.env.CONTACT_TO_EMAIL;
+  const to = process.env.CONTACT_TO_EMAIL || site.contact.email;
   const rows = enquiryRows(e);
+  const asText = rows.map(([k, v]) => `  ${k}: ${v}`).join("\n");
 
-  if (!key || !to) {
-    console.info("[contact] RESEND_API_KEY/CONTACT_TO_EMAIL not set; enquiry logged only:\n" +
-      rows.map(([k, v]) => `  ${k}: ${v}`).join("\n"));
+  if (!key) {
+    console.info(`[contact] RESEND_API_KEY not set; enquiry logged only:\n${asText}`);
     return { delivered: false, via: "log" };
   }
 
@@ -50,7 +51,7 @@ ${rows.map(([k, v]) => `<tr><td style="color:#666;vertical-align:top"><b>${escap
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      from: process.env.CONTACT_FROM_EMAIL || `${site.name} website <onboarding@resend.dev>`,
+      from: process.env.CONTACT_FROM_EMAIL || site.contact.emailFrom,
       to: to.split(",").map((s) => s.trim()).filter(Boolean),
       reply_to: e.email,
       subject: enquirySubject(e),
@@ -59,6 +60,8 @@ ${rows.map(([k, v]) => `<tr><td style="color:#666;vertical-align:top"><b>${escap
     }),
   });
   if (!res.ok) {
+    // Keep the enquiry in the logs so it isn't lost if email delivery is misconfigured.
+    console.error(`[contact] email delivery failed; enquiry details:\n${asText}`);
     throw new Error(`Resend responded ${res.status}: ${(await res.text()).slice(0, 300)}`);
   }
   return { delivered: true, via: "email" };

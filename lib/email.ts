@@ -158,5 +158,7 @@ export async function sendEnquiry(e: Enquiry): Promise<DeliveryResult> {
   // The enquiry arrived, so a failed thank-you is logged rather than shown as an error.
   if (thanksError) console.error(`[contact] thank-you email failed: ${thanksError}`);
 
+  // One line per delivered enquiry, so a test can be confirmed from the runtime logs.
+  console.info(`[contact] enquiry emailed to ${to}; thank-you ${thanks ? (thanksError ? "failed" : "sent") : "not sent (unverified sender)"}`);
   return { delivered: true, via: "email", acknowledged: Boolean(thanks && !thanksError) };
 }

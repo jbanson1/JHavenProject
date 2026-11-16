@@ -1,12 +1,11 @@
-# Haven: rent-to-rent website (demo)
+# Inhavenest: rent-to-rent website
 
-A landlord-facing website for a rent-to-rent / serviced-accommodation business (working name
-**"Haven"**). Its job is to reassure landlords that the company is legitimate and make it easy for
+A landlord-facing website for **Inhavenest**, a rent-to-rent / serviced-accommodation business. Its job is to reassure landlords that the company is legitimate and make it easy for
 them to get in touch, with a secondary enquiry route for guests.
 
 Built with **Next.js 16** (App Router, TypeScript) and designed to run free on **Vercel**.
 
-> **Still to come from the client:** registered company name and number, registered office address,
+> **Still to come from the client:** company number, registered office address,
 > real property photos and the founder story (see *Before launch*). There are no invented figures or
 > reviews on the site.
 
@@ -14,7 +13,7 @@ Built with **Next.js 16** (App Router, TypeScript) and designed to run free on *
 
 | Route | What it's for |
 | ----- | ------------- |
-| `/` | Hero with a quick-appraisal card (postcode + bedrooms, carried into the contact form), key points (fixed-term agreements, rent on the same date, free appraisal, no fees), who we are, "the usual way vs. with Haven" comparison, how it works, benefits, FAQ preview, call to action |
+| `/` | Hero with a quick-appraisal card (postcode + bedrooms, carried into the contact form), key points (fixed-term agreements, rent on the same date, free appraisal, no fees), who we are, "a normal let vs. letting to Inhavenest" comparison, how it works, benefits, FAQ preview, call to action |
 | `/landlords` | The full landlord proposition: the arrangement, steps, refurbishment, benefits, full FAQ (`/landlords#faq`) |
 | `/about` | Story, values, areas covered (London now, Jamaica coming soon) |
 | `/stay` | Guest page: what every home includes, and "coming soon" with the email address until an Airbnb listing exists (then "Book on Airbnb" buttons appear) |
@@ -36,8 +35,8 @@ npm run build
 ## Change the name, details, colours or photos
 
 - **Name, tagline, email, phone, WhatsApp, areas, Airbnb link, social links, photos:**
-  everything is in [`site.config.ts`](site.config.ts). Renaming from "Haven" to anything else is a
-  one-line change.
+  everything is in [`site.config.ts`](site.config.ts). The business name (`name`) is a one-line
+  change.
 - **Colours and fonts:** the variables at the top of [`app/globals.css`](app/globals.css) (navy
   `--accent`, cream `--sand`, gold `--clay`). Fonts are set in [`app/layout.tsx`](app/layout.tsx)
   (Plus Jakarta Sans headings, Inter body).
@@ -87,7 +86,7 @@ needs adding in Vercel.
 3. Vercel → Project → Settings → Environment Variables → add `RESEND_API_KEY` (Production, marked
    Sensitive), then redeploy.
 4. Send a test enquiry through the live form.
-5. `inhavenest.com` is verified in Resend, and emails are sent from `Haven <info@inhavenest.com>`
+5. `inhavenest.com` is verified in Resend, and emails are sent from `Inhavenest <info@inhavenest.com>`
    (`contact.emailFrom` in `site.config.ts`). The sender must stay on a verified domain.
 
 ## Deploy to Vercel (free)

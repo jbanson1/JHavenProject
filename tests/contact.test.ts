@@ -176,7 +176,7 @@ describe("POST /api/contact", () => {
     const [, init] = fetchMock.mock.calls[0] as unknown as [string, RequestInit];
     const sent = JSON.parse(String(init.body));
     expect(sent.to).toEqual(["info@inhavenest.com"]);
-    expect(sent.from).toBe("Haven <info@inhavenest.com>");
+    expect(sent.from).toBe("Inhavenest <info@inhavenest.com>");
   });
 
   it("keeps the enquiry in the logs and tells the visitor when sending fails", async () => {
@@ -221,7 +221,7 @@ describe("thank-you email to the landlord", () => {
   });
 
   it("is not sent while the sender is Resend's shared test address", async () => {
-    process.env.CONTACT_FROM_EMAIL = "Haven website <onboarding@resend.dev>";
+    process.env.CONTACT_FROM_EMAIL = "Inhavenest website <onboarding@resend.dev>";
     const fetchMock = vi.fn(async () => new Response("{}", { status: 200 }));
     vi.stubGlobal("fetch", fetchMock);
     expect((await POST(post({ ...good, startedAt: Date.now() - 30_000 }))).status).toBe(200);
@@ -235,8 +235,8 @@ describe("thank-you email to the landlord", () => {
     expect(fetchMock).toHaveBeenCalledTimes(2);
     const bodies = fetchMock.mock.calls.map((c) => JSON.parse(String((c as unknown as [string, RequestInit])[1].body)));
     const thanks = bodies.find((b) => b.to[0] === "sam@example.com")!;
-    expect(thanks.from).toBe("Haven <info@inhavenest.com>");
-    expect(thanks.subject).toBe("Thanks for getting in touch with Haven");
+    expect(thanks.from).toBe("Inhavenest <info@inhavenest.com>");
+    expect(thanks.subject).toBe("Thanks for getting in touch with Inhavenest");
     expect(thanks.reply_to).toBe("info@inhavenest.com");
     expect(thanks.text).toContain("Hi Sam,");
     expect(thanks.text).toContain("3-bedroom house");

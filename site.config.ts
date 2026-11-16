@@ -5,12 +5,12 @@
  * Colours and fonts live in app/globals.css (the :root variables at the top).
  */
 export const site = {
-  /** Working name. "HavenLux", "Havn" etc. are a one-line change. */
-  name: "Haven",
+  /** Business name, used across the site and in emails. */
+  name: "Inhavenest",
   /** Short line shown under the name in the footer and in search results. */
   tagline: "Guaranteed rent for landlords. Beautiful stays for guests.",
   description:
-    "Haven rents homes from landlords on fixed-term agreements, refurbishes and furnishes them, and manages them as serviced short stays. Guaranteed monthly rent, no void periods and no management fees.",
+    "Inhavenest rents homes from landlords on fixed-term agreements, refurbishes and furnishes them, and manages them as serviced short stays. Guaranteed monthly rent, no void periods and no management fees.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://haven-demo.vercel.app",
 
   contact: {
@@ -20,7 +20,7 @@ export const site = {
      * Sender for the enquiry email and the thank-you email to landlords. Must be on a
      * domain verified in Resend (inhavenest.com is). Landlords see this as the sender.
      */
-    emailFrom: "Haven <info@inhavenest.com>",
+    emailFrom: "Inhavenest <info@inhavenest.com>",
     /** No phone number for now: enquiries go through the form. Add one here to show it. */
     phone: "",
     hours: "Mon–Sat, 9am–6pm",
@@ -50,7 +50,7 @@ export const site = {
 
   /** Placeholder legal details for the footer. Replace once the company is registered. */
   legal: {
-    companyName: "Haven (trading name)",
+    companyName: "Inhavenest",
     companyNumber: "", // e.g. "Registered in England & Wales No. 00000000"
   },
 

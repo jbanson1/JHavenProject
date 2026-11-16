@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { BEDROOM_OPTIONS, PROPERTY_TYPES } from "@/lib/validate";
+import { BEDROOM_OPTIONS, PROPERTY_TYPES } from "@/lib/options";
+import { COUNTRIES, DEFAULT_COUNTRY, findCountry } from "@/lib/countries";
+import { isPlausiblePhone, sanitisePhoneInput } from "@/lib/phone";
 import { site } from "@/site.config";
 
 type Status = "idle" | "sending" | "sent" | "error";
@@ -13,6 +15,30 @@ export function ContactForm() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState("");
   const [prefill, setPrefill] = useState({ area: "", bedrooms: "" });
+  const [phone, setPhone] = useState("");
+  const [phoneCountry, setPhoneCountry] = useState<string>(DEFAULT_COUNTRY);
+  const dialCode = findCountry(phoneCountry)?.dial ?? "";
+
+  function clearError(name: string) {
+    setErrors((prev) => (prev[name] ? { ...prev, [name]: "" } : prev));
+  }
+
+  /**
+   * Keeps the field to what a phone number can contain while leaving the
+   * grouping people type (from JMB Digital Forge). The server re-derives and
+   * validates the number anyway, so this is for legibility, not for trust.
+   */
+  function onPhoneChange(value: string) {
+    setPhone(value.replace(/[^\d+()\s.-]/g, ""));
+    clearError("phone");
+  }
+
+  /** Only a digit-count check; the server checks the country's numbering plan. */
+  function onPhoneBlur() {
+    if (phone && !isPlausiblePhone(phone)) {
+      setErrors((prev) => ({ ...prev, phone: "That does not look like enough digits for a phone number." }));
+    }
+  }
   const startedAt = useRef<number>(0);
   const successRef = useRef<HTMLDivElement>(null);
 
@@ -32,15 +58,19 @@ export function ContactForm() {
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setStatus("sending");
     setErrors({});
     setFormError("");
+    if (phone && !isPlausiblePhone(phone)) {
+      setErrors({ phone: "Please check the phone number, or leave it blank." });
+      return;
+    }
+    setStatus("sending");
     const data = Object.fromEntries(new FormData(e.currentTarget).entries());
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, type: "landlord", startedAt: startedAt.current }),
+        body: JSON.stringify({ ...data, phone: phone ? sanitisePhoneInput(phone) : "", phoneCountry, startedAt: startedAt.current }),
       });
       const json = await res.json().catch(() => ({}));
       if (res.ok && json.ok) {
@@ -92,22 +122,46 @@ export function ContactForm() {
         </div>
         <div className="field">
           <label htmlFor="f-email">Email</label>
-          <input {...field("email")} type="email" autoComplete="email" required maxLength={200} />
+          <input {...field("email")} type="email" autoComplete="email" required maxLength={254} />
           {err("email")}
         </div>
       </div>
 
-      <div className="form-row">
+      <div className="form-row form-row--phone">
+        <div className="field">
+          <label htmlFor="f-phoneCountry">Country</label>
+          <select id="f-phoneCountry" value={phoneCountry} onChange={(e) => { setPhoneCountry(e.target.value); clearError("phone"); }}>
+            {COUNTRIES.map((c) => (
+              <option key={c.iso} value={c.iso}>{c.name} (+{c.dial})</option>
+            ))}
+          </select>
+        </div>
         <div className="field">
           <label htmlFor="f-phone">Phone <span className="optional">(optional)</span></label>
-          <input {...field("phone")} type="tel" autoComplete="tel" maxLength={30} />
+          <div className="phone-field">
+            <span className="phone-field__dial" aria-hidden="true">+{dialCode}</span>
+            <input
+              id="f-phone"
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel-national"
+              maxLength={32}
+              placeholder="7911 123456"
+              value={phone}
+              onChange={(e) => onPhoneChange(e.target.value)}
+              onBlur={onPhoneBlur}
+              aria-invalid={errors.phone ? true : undefined}
+              aria-describedby={errors.phone ? "e-phone" : undefined}
+            />
+          </div>
           {err("phone")}
         </div>
-        <div className="field">
-          <label htmlFor="f-area">Area or postcode <span className="optional">(optional)</span></label>
-          <input {...field("area")} key={`area-${prefill.area}`} defaultValue={prefill.area} maxLength={100} placeholder="e.g. Walthamstow, E17" />
-          {err("area")}
-        </div>
+      </div>
+
+      <div className="field">
+        <label htmlFor="f-area">Area or postcode <span className="optional">(optional)</span></label>
+        <input {...field("area")} key={`area-${prefill.area}`} defaultValue={prefill.area} maxLength={100} placeholder="e.g. Walthamstow, E17" />
+        {err("area")}
       </div>
 
       <div className="form-row">
@@ -133,7 +187,7 @@ export function ContactForm() {
         <label htmlFor="f-message">Message <span className="optional">(optional)</span></label>
         <textarea
           {...field("message")}
-          maxLength={3000}
+          maxLength={5000}
           placeholder="Tell us a little about the property: when it's available, its condition, anything we should know."
         />
         {err("message")}

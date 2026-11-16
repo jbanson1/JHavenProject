@@ -65,18 +65,25 @@ Enquiries are POSTed to [`app/api/contact/route.ts`](app/api/contact/route.ts), 
    - a light per-IP **rate limit** ([`lib/rateLimit.ts`](lib/rateLimit.ts)).
 
    Spam is dropped **silently**: the sender still sees "thank you", so bots learn nothing.
-3. **Emails** the enquiry ([`lib/email.ts`](lib/email.ts)) via [Resend](https://resend.com)'s free
-   tier (100 emails a day), with "reply-to" set to the sender. If no API key is set, the enquiry is
-   written to the server log instead, so the demo works with zero setup.
+3. **Emails** the enquiry ([`lib/email.ts`](lib/email.ts)) to **info@inhavenest.com** (`site.contact.email`)
+   via [Resend](https://resend.com)'s free tier (100 emails a day), with "reply-to" set to the
+   sender. If no API key is set, the enquiry is written to the server log instead. If sending fails,
+   the visitor is asked to email instead and the enquiry is still written to the log.
 
 ### Turn on email delivery
 
-1. Create a free Resend account and an API key.
-2. In Vercel → Project → Settings → Environment Variables, add (see [`.env.example`](.env.example)):
-   - `RESEND_API_KEY`
-   - `CONTACT_TO_EMAIL`: the inbox enquiries go to
-   - `CONTACT_FROM_EMAIL`: optional; use `onboarding@resend.dev` until the real domain is verified in Resend
-3. Redeploy.
+The recipient (info@inhavenest.com) and sender are set in `site.config.ts`, so only the API key
+needs adding in Vercel.
+
+1. Create a free Resend account, ideally signed up **with info@inhavenest.com**. Until a domain is
+   verified, Resend's shared sender (`onboarding@resend.dev`) only delivers to the account's own email.
+2. Resend → API Keys → create a key with sending access.
+3. Vercel → Project → Settings → Environment Variables → add `RESEND_API_KEY` (Production, marked
+   Sensitive), then redeploy.
+4. Send a test enquiry through the live form.
+5. Later, verify `inhavenest.com` in Resend (Domains → add the DNS records it shows) and change
+   `contact.emailFrom` in `site.config.ts` to an address on that domain, e.g.
+   `Haven website <website@inhavenest.com>`.
 
 ## Deploy to Vercel (free)
 

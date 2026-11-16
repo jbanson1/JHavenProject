@@ -14,7 +14,14 @@ export const site = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://haven-demo.vercel.app",
 
   contact: {
+    /** Shown on the site, and where contact-form enquiries are emailed. */
     email: "info@inhavenest.com",
+    /**
+     * Sender for enquiry emails. Resend's shared address works straight away but only
+     * delivers to the email the Resend account was opened with. Once inhavenest.com is
+     * verified in Resend, change this to e.g. "Haven website <website@inhavenest.com>".
+     */
+    emailFrom: "Haven website <onboarding@resend.dev>",
     /** No phone number for now: enquiries go through the form. Add one here to show it. */
     phone: "",
     hours: "Mon–Sat, 9am–6pm",

@@ -87,9 +87,8 @@ needs adding in Vercel.
 3. Vercel → Project → Settings → Environment Variables → add `RESEND_API_KEY` (Production, marked
    Sensitive), then redeploy.
 4. Send a test enquiry through the live form.
-5. Later, verify `inhavenest.com` in Resend (Domains → add the DNS records it shows) and change
-   `contact.emailFrom` in `site.config.ts` to an address on that domain, e.g.
-   `Haven website <website@inhavenest.com>`.
+5. `inhavenest.com` is verified in Resend, and emails are sent from `Haven <info@inhavenest.com>`
+   (`contact.emailFrom` in `site.config.ts`). The sender must stay on a verified domain.
 
 ## Deploy to Vercel (free)
 

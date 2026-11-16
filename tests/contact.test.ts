@@ -169,7 +169,7 @@ describe("POST /api/contact", () => {
     const [, init] = fetchMock.mock.calls[0] as unknown as [string, RequestInit];
     const sent = JSON.parse(String(init.body));
     expect(sent.to).toEqual(["info@inhavenest.com"]);
-    expect(sent.from).toContain("onboarding@resend.dev");
+    expect(sent.from).toBe("Haven <info@inhavenest.com>");
   });
 
   it("keeps the enquiry in the logs and tells the visitor when sending fails", async () => {
@@ -189,10 +189,10 @@ describe("POST /api/contact", () => {
     vi.stubGlobal("fetch", fetchMock);
     const out = await POST(post({ ...good, startedAt: Date.now() - 30_000 }));
     expect(out.status).toBe(200);
-    expect(fetchMock).toHaveBeenCalledOnce();
-    const [url, init] = fetchMock.mock.calls[0] as unknown as [string, RequestInit];
-    expect(url).toBe("https://api.resend.com/emails");
-    const sent = JSON.parse(String(init.body));
+    expect(fetchMock).toHaveBeenCalledTimes(2); // enquiry + thank-you
+    const calls = fetchMock.mock.calls as unknown as [string, RequestInit][];
+    expect(calls.every(([url]) => url === "https://api.resend.com/emails")).toBe(true);
+    const sent = calls.map(([, init]) => JSON.parse(String(init.body))).find((b) => b.to[0] === "owner@example.com")!;
     expect(sent.to).toEqual(["owner@example.com"]);
     expect(sent.reply_to).toBe("sam@example.com");
     expect(sent.subject).toContain("Walthamstow");
@@ -214,20 +214,21 @@ describe("thank-you email to the landlord", () => {
   });
 
   it("is not sent while the sender is Resend's shared test address", async () => {
+    process.env.CONTACT_FROM_EMAIL = "Haven website <onboarding@resend.dev>";
     const fetchMock = vi.fn(async () => new Response("{}", { status: 200 }));
     vi.stubGlobal("fetch", fetchMock);
     expect((await POST(post({ ...good, startedAt: Date.now() - 30_000 }))).status).toBe(200);
     expect(fetchMock).toHaveBeenCalledOnce();
   });
 
-  it("is sent to the landlord from a verified domain, echoing only their first name", async () => {
-    process.env.CONTACT_FROM_EMAIL = "Haven website <website@inhavenest.com>";
+  it("is sent to the landlord from info@inhavenest.com, echoing only their first name", async () => {
     const fetchMock = vi.fn(async () => new Response("{}", { status: 200 }));
     vi.stubGlobal("fetch", fetchMock);
     expect((await POST(post({ ...good, startedAt: Date.now() - 30_000 }))).status).toBe(200);
     expect(fetchMock).toHaveBeenCalledTimes(2);
     const bodies = fetchMock.mock.calls.map((c) => JSON.parse(String((c as unknown as [string, RequestInit])[1].body)));
     const thanks = bodies.find((b) => b.to[0] === "sam@example.com")!;
+    expect(thanks.from).toBe("Haven <info@inhavenest.com>");
     expect(thanks.subject).toBe("Thanks for getting in touch with Haven");
     expect(thanks.reply_to).toBe("info@inhavenest.com");
     expect(thanks.text).toContain("Hi Sam,");
@@ -237,7 +238,6 @@ describe("thank-you email to the landlord", () => {
   });
 
   it("doesn't fail the enquiry if only the thank-you fails", async () => {
-    process.env.CONTACT_FROM_EMAIL = "Haven website <website@inhavenest.com>";
     const errSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     vi.stubGlobal("fetch", vi.fn(async (_u: string, init: RequestInit) =>
       JSON.parse(String(init.body)).to[0] === "sam@example.com" ? new Response("nope", { status: 422 }) : new Response("{}", { status: 200 })));

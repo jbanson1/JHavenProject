@@ -17,11 +17,10 @@ export const site = {
     /** Shown on the site, and where contact-form enquiries are emailed. */
     email: "info@inhavenest.com",
     /**
-     * Sender for enquiry emails. Resend's shared address works straight away but only
-     * delivers to the email the Resend account was opened with. Once inhavenest.com is
-     * verified in Resend, change this to e.g. "Haven website <website@inhavenest.com>".
+     * Sender for the enquiry email and the thank-you email to landlords. Must be on a
+     * domain verified in Resend (inhavenest.com is). Landlords see this as the sender.
      */
-    emailFrom: "Haven website <onboarding@resend.dev>",
+    emailFrom: "Haven <info@inhavenest.com>",
     /** No phone number for now: enquiries go through the form. Add one here to show it. */
     phone: "",
     hours: "Mon–Sat, 9am–6pm",

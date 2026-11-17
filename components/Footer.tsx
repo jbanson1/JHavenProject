@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { site } from "@/site.config";
+import { legalLinks } from "./LegalPage";
 
 export function Footer() {
   const social = Object.entries(site.social).filter(([, url]) => url);
@@ -56,7 +57,9 @@ export function Footer() {
             {site.legal.companyNumber && ` · Registered in ${site.legal.registeredIn}, company no. ${site.legal.companyNumber}`}
             {site.legal.registeredOffice && ` · Registered office: ${site.legal.registeredOffice}`}
           </span>
-          <Link href="/privacy">Privacy notice</Link>
+          <nav className="footer-legal" aria-label="Legal">
+            {legalLinks.map((l) => <Link key={l.href} href={l.href}>{l.label}</Link>)}
+          </nav>
         </div>
       </div>
     </footer>

@@ -18,7 +18,11 @@ Built with **Next.js 16** (App Router, TypeScript) and designed to run free on *
 | `/about` | Story, values, areas covered (London now, Jamaica coming soon) |
 | `/stay` | Guest page: what every home includes, and "coming soon" with the email address until an Airbnb listing exists (then "Book on Airbnb" buttons appear) |
 | `/contact` | Landlord appraisal form (required: name, email, property type, bedrooms) and contact details. No phone number: enquiries go through the form |
-| `/privacy` | Template GDPR privacy notice |
+| `/terms` | Website terms of use |
+| `/privacy` | UK GDPR privacy notice (what the form collects, Vercel and Resend as processors, retention, rights) |
+| `/cookies` | Cookie notice (the site sets no cookies and loads nothing from other sites) |
+| `/accessibility` | Accessibility statement (WCAG 2.2 AA approach) |
+| `/business-information` | Company details: Inhavenest Ltd, no. 17586300 |
 
 Also generates `sitemap.xml`, `robots.txt`, page titles/descriptions and Open Graph tags.
 
@@ -106,7 +110,7 @@ needs adding in Vercel.
 - [ ] Her Airbnb listing URL in `site.config.ts` → `bookingLinks.airbnb` once it exists
 - [ ] Real reviews and figures once there's a track record (never invented ones; that's illegal in the UK under the DMCC Act 2024)
 - [ ] Founder story on `/about` in her own words
-- [ ] Have the FAQ answers and privacy notice checked against the real agreement (ideally by a solicitor)
+- [ ] Have the FAQ answers and the legal pages (terms, privacy, cookies) checked against the real agreement, ideally by a solicitor. Their date is `LEGAL_UPDATED` in `components/LegalPage.tsx`
 - [ ] Swap stock photos for real properties as they come on board
 - [ ] Turn on email delivery (above) and send a test enquiry
 

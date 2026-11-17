@@ -17,9 +17,6 @@ export default function Home() {
       >
         <div className="btn-row">
           <ButtonLink href="/landlords" variant="outline-light">How it works</ButtonLink>
-          {site.bookingLinks.airbnb && (
-            <a className="btn btn--outline-light" href={site.bookingLinks.airbnb} target="_blank" rel="noopener noreferrer">Book a stay</a>
-          )}
         </div>
       </Hero>
 

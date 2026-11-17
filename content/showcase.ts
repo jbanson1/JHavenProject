@@ -11,7 +11,6 @@
  *   facts: ["2 bedrooms", "Sleeps 4", "Self check-in", "Fast Wi-Fi and a desk"],
  *   photos: ["/images/home-1.jpg", "/images/home-2.jpg", "/images/home-3.jpg", "/images/home-4.jpg", "/images/home-5.jpg"],
  *   travelTimes: [{ place: "Liverpool Street", time: "8 min" }, { place: "Canary Wharf", time: "10 min" }],
- *   bookingUrl: "https://www.airbnb.co.uk/rooms/…",
  * };
  */
 
@@ -24,8 +23,6 @@ export type FeaturedProperty = {
   photos: string[];
   /** Approximate journey times by public transport, shown as one line. Check before publishing. */
   travelTimes: { place: string; time: string }[];
-  /** Airbnb or other booking link for this home. "" hides the button. */
-  bookingUrl: string;
 };
 
 export const featuredProperty: FeaturedProperty | null = null;

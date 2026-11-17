@@ -218,21 +218,6 @@ export function CtaBand({
   );
 }
 
-/** Guests book through Airbnb rather than the contact form. */
-export function AirbnbCard() {
-  const url = site.bookingLinks.airbnb;
-  if (!url) return null;
-  return (
-    <div className="guest-card">
-      <div>
-        <h3>Looking for somewhere to stay?</h3>
-        <p>Our homes, prices and availability are on Airbnb.</p>
-      </div>
-      <a className="btn btn--airbnb" href={url} target="_blank" rel="noopener noreferrer">View on Airbnb</a>
-    </div>
-  );
-}
-
 export const values = [
   { title: "Straight answers", body: "Clear contracts and honest numbers. If a property isn't right for short stays, we'll tell you." },
   { title: "We look after it", body: "We treat every home as if it were our own. It's your investment, and our reputation." },
@@ -286,9 +271,6 @@ export function FeaturedPropertySection() {
               <p className="featured-times">{p.travelTimes.map((t) => `${t.place} ${t.time}`).join("  ·  ")}</p>
             )}
           </div>
-          {p.bookingUrl && (
-            <a className="btn btn--airbnb" href={p.bookingUrl} target="_blank" rel="noopener noreferrer">See this home on Airbnb</a>
-          )}
         </div>
       </div>
     </section>

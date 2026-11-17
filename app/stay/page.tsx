@@ -18,24 +18,19 @@ const expect: { title: string; body: string; scene: Scene }[] = [
 ];
 
 function BookingButtons({ light = false }: { light?: boolean }) {
-  const { airbnb, bookingCom } = site.bookingLinks;
-  if (!airbnb && !bookingCom) return null;
+  const { bookingCom } = site.bookingLinks;
+  if (!bookingCom) return null;
   return (
     <div className="btn-row">
-      {airbnb && (
-        <a className="btn btn--airbnb" href={airbnb} target="_blank" rel="noopener noreferrer">Book on Airbnb</a>
-      )}
-      {bookingCom && (
-        <a className={`btn ${light ? "btn--outline-light" : "btn--ghost"}`} href={bookingCom} target="_blank" rel="noopener noreferrer">
-          Book on Booking.com
-        </a>
-      )}
+      <a className={`btn ${light ? "btn--outline-light" : "btn--primary"}`} href={bookingCom} target="_blank" rel="noopener noreferrer">
+        Book on Booking.com
+      </a>
     </div>
   );
 }
 
 export default function Stay() {
-  const listed = Boolean(site.bookingLinks.airbnb || site.bookingLinks.bookingCom);
+  const listed = Boolean(site.bookingLinks.bookingCom);
   return (
     <>
       <Hero
@@ -78,7 +73,7 @@ export default function Stay() {
               <>
                 <h2>Our first homes are coming soon</h2>
                 <p className="lead">
-                  We&apos;re getting our first homes ready now. They&apos;ll be bookable on Airbnb and Booking.com.
+                  We&apos;re getting our first homes ready now.
                 </p>
                 <p>
                   Planning a stay or booking for a team? Email{" "}

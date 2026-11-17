@@ -16,7 +16,7 @@ Built with **Next.js 16** (App Router, TypeScript) and designed to run free on *
 | `/` | Hero with a quick-appraisal card (postcode + bedrooms, carried into the contact form), key points (fixed-term agreements, rent on the same date, free appraisal, no fees), who we are, "a normal let vs. letting to Inhavenest" comparison, how it works, benefits, FAQ preview, call to action |
 | `/landlords` | The full landlord proposition: the arrangement, steps, refurbishment, benefits, full FAQ (`/landlords#faq`) |
 | `/about` | Story, values, areas covered (London now, Jamaica coming soon) |
-| `/stay` | Guest page: what every home includes, and "coming soon" with the email address until an Airbnb listing exists (then "Book on Airbnb" buttons appear) |
+| `/stay` | Guest page: what every home includes, and "coming soon" with the email address (a "Book on Booking.com" button appears if `bookingLinks.bookingCom` is set) |
 | `/contact` | Landlord appraisal form (required: name, email, property type, bedrooms) and contact details. No phone number: enquiries go through the form |
 | `/terms` | Website terms of use |
 | `/privacy` | UK GDPR privacy notice (what the form collects, Vercel and Resend as processors, retention, rights) |
@@ -38,7 +38,7 @@ npm run build
 
 ## Change the name, details, colours or photos
 
-- **Name, tagline, email, phone, WhatsApp, areas, Airbnb link, social links, photos:**
+- **Name, tagline, email, phone, WhatsApp, areas, booking link, social links, photos:**
   everything is in [`site.config.ts`](site.config.ts). The business name (`name`) is a one-line
   change.
 - **Colours and fonts:** the variables at the top of [`app/globals.css`](app/globals.css) (navy
@@ -110,7 +110,6 @@ needs adding in Vercel.
 - [x] Contact email set to info@inhavenest.com (no phone number, by choice)
 - [x] Registered company name and number: Inhavenest Ltd, 17586300 (England and Wales)
 - [ ] Registered office address (`legal.registeredOffice` in `site.config.ts`) and ICO registration
-- [ ] Her Airbnb listing URL in `site.config.ts` → `bookingLinks.airbnb` once it exists
 - [ ] Real reviews and figures once there's a track record (never invented ones; that's illegal in the UK under the DMCC Act 2024)
 - [ ] Founder story on `/about` in her own words
 - [ ] Have the FAQ answers and the legal pages (terms, privacy, cookies) checked against the real agreement, ideally by a solicitor. Their date is `LEGAL_UPDATED` in `components/LegalPage.tsx`
@@ -119,7 +118,7 @@ needs adding in Vercel.
 
 ## Later (not in this demo)
 
-- Real property listings linked to their individual Airbnb pages
+- Real property listings with their own booking pages
 - Direct booking
 - Smart-lock / property-automation dashboard (check which devices offer APIs)
 - Moving from free tiers to paid plans for reliability once the business is trading

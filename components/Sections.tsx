@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { site } from "@/site.config";
 import { landlordFaqs, type Faq } from "@/content/faq";
 import { keyPoints } from "@/content/keyPoints";
+import { featuredProperty, guestTypes } from "@/content/showcase";
 import { BEDROOM_OPTIONS } from "@/lib/options";
 import { Photo, type Scene } from "./Photo";
 
@@ -157,19 +158,6 @@ export function Benefits() {
   );
 }
 
-/** Navy text panel beside a full-height photo. */
-export function SplitBand({ photo, scene = "exterior", title, body, href, label }: { photo: string | null; scene?: Scene; title: string; body: string; href: string; label: string }) {
-  return (
-    <section className="split-band">
-      <div className="split-band__text">
-        <h2>{title}</h2>
-        <p>{body}</p>
-        <ButtonLink href={href} variant="light">{label}</ButtonLink>
-      </div>
-      <Photo src={photo} alt="" scene={scene} sizes="(max-width: 860px) 100vw, 50vw" />
-    </section>
-  );
-}
 
 export function FaqList({ items = landlordFaqs }: { items?: Faq[] }) {
   return (
@@ -250,3 +238,59 @@ export const values = [
   { title: "We look after it", body: "We treat every home as if it were our own. It's your investment, and our reputation." },
   { title: "We get back to you", body: "Rent on time, every time, and a real person to deal with when you need us." },
 ];
+
+/** Who stays in our homes: four short columns. */
+export function GuestTypes() {
+  return (
+    <section className="section">
+      <div className="container">
+        <SectionHead
+          title="Who stays in our homes"
+          lead="Guests are ID-checked and booked for a purpose, so your property is looked after."
+        />
+        <ul className="guest-types">
+          {guestTypes.map((g) => (
+            <li key={g.title}>
+              <h3>{g.title}</h3>
+              <p>{g.body}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+/** One of our homes, with a photo grid and travel times. Hidden until one is set in content/showcase.ts. */
+export function FeaturedPropertySection() {
+  if (!featuredProperty) return null;
+  const p = featuredProperty;
+  const [main, ...rest] = p.photos;
+  return (
+    <section className="section section--sand" aria-labelledby="featured-title">
+      <div className="container">
+        <div className="section-head">
+          <h2 id="featured-title">{p.name}</h2>
+          <p className="lead">{p.area}. {p.summary}</p>
+        </div>
+        <div className="gallery">
+          <Photo src={main} alt={`${p.name}: living space`} scene="living" className="gallery__main" sizes="(max-width: 760px) 100vw, 60vw" />
+          {rest.slice(0, 4).map((src, i) => (
+            <Photo key={src} src={src} alt={`${p.name}: photo ${i + 2}`} scene="bedroom" className="gallery__thumb" sizes="(max-width: 760px) 50vw, 20vw" />
+          ))}
+        </div>
+        <div className="featured-facts">
+          <div>
+            <ul>{p.facts.map((f) => <li key={f}>{f}</li>)}</ul>
+            {p.travelTimes.length > 0 && (
+              <p className="featured-times">{p.travelTimes.map((t) => `${t.place} ${t.time}`).join("  ·  ")}</p>
+            )}
+          </div>
+          {p.bookingUrl && (
+            <a className="btn btn--airbnb" href={p.bookingUrl} target="_blank" rel="noopener noreferrer">See this home on Airbnb</a>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}

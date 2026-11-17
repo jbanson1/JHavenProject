@@ -1,7 +1,7 @@
 import { site } from "@/site.config";
 import { Photo } from "@/components/Photo";
 import {
-  Benefits, ButtonLink, Compare, CtaBand, FaqSection, Hero, KeyPoints, QuickAppraisal, SectionHead, SplitBand, Steps,
+  Benefits, ButtonLink, Compare, CtaBand, FaqSection, FeaturedPropertySection, GuestTypes, Hero, KeyPoints, QuickAppraisal, SectionHead, Steps,
 } from "@/components/Sections";
 import { landlordFaqs } from "@/content/faq";
 
@@ -17,6 +17,9 @@ export default function Home() {
       >
         <div className="btn-row">
           <ButtonLink href="/landlords" variant="outline-light">How it works</ButtonLink>
+          {site.bookingLinks.airbnb && (
+            <a className="btn btn--outline-light" href={site.bookingLinks.airbnb} target="_blank" rel="noopener noreferrer">Book a stay</a>
+          )}
         </div>
       </Hero>
 
@@ -42,6 +45,8 @@ export default function Home() {
         </div>
       </section>
 
+      <FeaturedPropertySection />
+
       <section className="section section--sand">
         <div className="container">
           <SectionHead
@@ -59,13 +64,7 @@ export default function Home() {
         </div>
       </section>
 
-      <SplitBand
-        photo={site.photos.city}
-        title="Who our homes are for"
-        body="People working in the city, such as contractors, consultants and staff on placement, and families visiting for a week or two. They want a proper home rather than a hotel room."
-        href="/landlords"
-        label="More for landlords"
-      />
+      <GuestTypes />
 
       <section className="section">
         <div className="container split" style={{ alignItems: "start" }}>

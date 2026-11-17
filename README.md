@@ -45,6 +45,9 @@ npm run build
   `--accent`, cream `--sand`, gold `--clay`). Fonts are set in [`app/layout.tsx`](app/layout.tsx)
   (Plus Jakarta Sans headings, Inter body).
 - **FAQ:** [`content/faq.ts`](content/faq.ts).
+- **Featured property, gallery and travel times:** [`content/showcase.ts`](content/showcase.ts). Hidden until
+  `featuredProperty` is filled in with a real home (photos in `public/images/`); the example in the
+  file shows the format. "Who stays" groups are in the same file.
 - **Key points strip:** [`content/keyPoints.ts`](content/keyPoints.ts). Keep these to true statements;
   add real figures and landlord reviews once there's a track record.
 - **Photos:** free Unsplash stock in `public/images/` (list and sources in

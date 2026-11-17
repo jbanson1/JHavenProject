@@ -18,7 +18,8 @@ export default function Privacy() {
         <h2>Who we are</h2>
         <p>
           {site.legal.companyName}
-          {site.legal.companyNumber && `, ${site.legal.companyNumber}`}. You can contact us at{" "}
+          {site.legal.companyNumber && `, a company registered in ${site.legal.registeredIn} (company no. ${site.legal.companyNumber})`}
+          {site.legal.registeredOffice && `, registered office ${site.legal.registeredOffice}`}. You can contact us at{" "}
           <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>.
         </p>
 

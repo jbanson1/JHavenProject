@@ -48,10 +48,16 @@ export const site = {
     facebook: "",
   },
 
-  /** Placeholder legal details for the footer. Replace once the company is registered. */
+  /**
+   * Registered company details, shown in the footer and privacy notice (UK law
+   * requires the registered name, number and place of registration on the site).
+   */
   legal: {
-    companyName: "Inhavenest",
-    companyNumber: "", // e.g. "Registered in England & Wales No. 00000000"
+    companyName: "Inhavenest Ltd",
+    companyNumber: "17586300",
+    registeredIn: "England and Wales",
+    /** Registered office address. TODO: add once confirmed; "" hides it. */
+    registeredOffice: "",
   },
 
   /**

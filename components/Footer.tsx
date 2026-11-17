@@ -53,7 +53,8 @@ export function Footer() {
         <div className="footer-bottom">
           <span>
             © {new Date().getFullYear()} {site.legal.companyName}
-            {site.legal.companyNumber && ` · ${site.legal.companyNumber}`}
+            {site.legal.companyNumber && ` · Registered in ${site.legal.registeredIn}, company no. ${site.legal.companyNumber}`}
+            {site.legal.registeredOffice && ` · Registered office: ${site.legal.registeredOffice}`}
           </span>
           <Link href="/privacy">Privacy notice</Link>
         </div>

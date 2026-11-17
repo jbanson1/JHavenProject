@@ -5,7 +5,7 @@ them to get in touch, with a secondary enquiry route for guests.
 
 Built with **Next.js 16** (App Router, TypeScript) and designed to run free on **Vercel**.
 
-> **Still to come from the client:** company number, registered office address,
+> **Still to come from the client:** registered office address,
 > real property photos and the founder story (see *Before launch*). There are no invented figures or
 > reviews on the site.
 
@@ -101,7 +101,8 @@ needs adding in Vercel.
 
 - [ ] Final business name in `site.config.ts` (and check the domain and Companies House availability)
 - [x] Contact email set to info@inhavenest.com (no phone number, by choice)
-- [ ] Registered company name, company number and registered office address (footer and privacy notice), plus ICO registration
+- [x] Registered company name and number: Inhavenest Ltd, 17586300 (England and Wales)
+- [ ] Registered office address (`legal.registeredOffice` in `site.config.ts`) and ICO registration
 - [ ] Her Airbnb listing URL in `site.config.ts` → `bookingLinks.airbnb` once it exists
 - [ ] Real reviews and figures once there's a track record (never invented ones; that's illegal in the UK under the DMCC Act 2024)
 - [ ] Founder story on `/about` in her own words

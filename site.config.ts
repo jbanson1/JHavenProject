@@ -34,11 +34,10 @@ export const site = {
   futureAreas: ["Jamaica"],
 
   /**
-   * Guest booking links. Add her Airbnb listing or host profile URL here once it
-   * exists and "Book on Airbnb" buttons appear on the Stay and Contact pages.
+   * Guest booking link. Add a Booking.com listing URL here once it exists and a
+   * "Book on Booking.com" button appears on the Stay page. "" hides it.
    */
   bookingLinks: {
-    airbnb: "",
     bookingCom: "",
   },
 

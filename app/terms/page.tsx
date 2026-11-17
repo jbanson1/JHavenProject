@@ -31,7 +31,7 @@ export default function Terms() {
 
       <h2>Guests and bookings</h2>
       <p>
-        Stays in our homes are booked through third-party platforms such as Airbnb and Booking.com, and those bookings are governed by the platform&apos;s own terms and by our house rules for each home. These website terms do not create a booking.
+        Stays in our homes are booked through third-party booking platforms, and those bookings are governed by the platform&apos;s own terms and by our house rules for each home. These website terms do not create a booking.
       </p>
 
       <h2>Accuracy and availability</h2>

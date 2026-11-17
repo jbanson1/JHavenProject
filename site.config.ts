@@ -11,7 +11,7 @@ export const site = {
   tagline: "Guaranteed rent for landlords. Beautiful stays for guests.",
   description:
     "Inhavenest rents homes from landlords on fixed-term agreements, refurbishes and furnishes them, and manages them as serviced short stays. Guaranteed monthly rent, no void periods and no management fees.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://haven-demo.vercel.app",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.inhavenest.com",
 
   contact: {
     /** Shown on the site, and where contact-form enquiries are emailed. */

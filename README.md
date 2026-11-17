@@ -101,12 +101,12 @@ needs adding in Vercel.
 1. Go to <https://vercel.com/new> and import this GitHub repository.
 2. Keep the defaults (framework: Next.js) and click **Deploy**.
 3. You'll get a free `*.vercel.app` link to share with the client.
-4. Once the business name is final, buy the domain and add it under Project → Settings → Domains,
-   then set `NEXT_PUBLIC_SITE_URL` to it.
+4. The live domain is **www.inhavenest.com** (DNS on Cloudflare, `inhavenest.com` redirects to `www`).
+   It's the default `url` in `site.config.ts`; `NEXT_PUBLIC_SITE_URL` overrides it if ever needed.
 
 ## Before launch
 
-- [ ] Final business name in `site.config.ts` (and check the domain and Companies House availability)
+- [x] Business name (Inhavenest) and domain (www.inhavenest.com) set in `site.config.ts`
 - [x] Contact email set to info@inhavenest.com (no phone number, by choice)
 - [x] Registered company name and number: Inhavenest Ltd, 17586300 (England and Wales)
 - [ ] Registered office address (`legal.registeredOffice` in `site.config.ts`) and ICO registration
